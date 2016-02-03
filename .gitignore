@@ -1,5 +1,5 @@
 *.json
-*.txt
+*log.txt
 tokens.py
 __pycache__/*
 venv/*
