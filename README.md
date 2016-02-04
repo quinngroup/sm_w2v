@@ -1,5 +1,7 @@
 # download_twitter_disease_data
 
+[![Build Status](https://travis-ci.org/quinngroup/sm_w2v.svg?branch=master)](https://travis-ci.org/quinngroup/sm_w2v)
+
 Before running, you need two additional (untracked) files:
 
 ```
