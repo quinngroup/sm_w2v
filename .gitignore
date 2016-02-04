@@ -1,7 +1,10 @@
 *.json
 *log.txt
+*.test*
 tokens.py
 __pycache__/*
 venv/*
 *.pyc
 *.ipynb_checkpoints
+tools/*
+doc/*

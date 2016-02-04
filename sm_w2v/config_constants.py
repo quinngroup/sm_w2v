@@ -23,13 +23,13 @@ track = ['hiv', 'aids', 'pre-exposure', 'prep', 'prophylaxis',
 'Syphilis', 'Varicella', 'chicken pox', 'West Nile Virus']
 
 # data directories config
-r_twt_data_dir = "raw_twt_data/"
-r_red_data_dir = "raw_reddit_data/"
+r_twt_data_dir = "sm_w2v/r_twt_data/"
+r_red_data_dir = "sm_w2v/r_red_data/"
 
-c_twt_data_dir = "cl_twt_data.txt"
-c_red_data_dir = "cl_reddit_data.txt"
+c_twt_data_dir = "sm_w2v/c_twt_data/"
+c_red_data_dir = "sm_w2v/c_red_data/"
 
-goog_data_dir = "google_search_data/"
+goog_data_dir = "sm_w2v/google_search_data/"
 
 er_log = "log.txt"
 
