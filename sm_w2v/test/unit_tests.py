@@ -89,9 +89,9 @@ class TestUtils(unittest.TestCase):
         model = Word2Vec.load("temp/twt_word.model")
         rel_wds = model.most_similar(positive=['hiv'], topn=10)
 
-        count_related_words_normalized(rel_wds,
-               "sm_w2v/c_twt_data/",
-               "temp/twt_hiv_wdfreq.csv")
+        #count_related_words_normalized(rel_wds,
+        #       "sm_w2v/c_twt_data/",
+        #       "temp/twt_hiv_wdfreq.csv")
 
 if __name__ == "__main__":
     unittest.main()
