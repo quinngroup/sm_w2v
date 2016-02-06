@@ -1,3 +1,7 @@
+*~*
+*.csv
+*.txt
+temp/*
 *.json
 *log.txt
 *.test*

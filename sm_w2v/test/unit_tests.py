@@ -1,21 +1,30 @@
 import unittest
 import json
+import os
+import shutil
+import itertools
 
 from sm_w2v.utils import (
-        get_weeknum_frm_obj,
-        write_obj,
-        preprocess_txt,
-        clean_sentences
-        )
-from sm_w2v.config_constants import (
-        r_twt_data_dir,
-        r_red_data_dir
-        )
+    get_weeknum_frm_obj,
+    write_obj,
+    preprocess_txt,
+    clean_sentences,
+    cleaned_sentences_twt,
+    cleaned_sentences_red,
+    make_model,
+    count_related_words_normalized
+    )
+
+from gensim.models import Word2Vec
 
 class TestUtils(unittest.TestCase):
     """
     Unit test everything in `sm_w2v.utils`
     """
+
+    def setUp(self):
+        if not os.path.exists('temp/'):
+                os.makedirs('temp/')
 
     def test_get_weeknum_frm_obj(self):
         # tweet example
@@ -50,30 +59,39 @@ class TestUtils(unittest.TestCase):
         self.assertEqual(cln_txt, [["sentence", "one"], ["grapefruit"], []])
 
     def test_clean_sentences(self):
-        indir_twt = r_twt_data_dir + "test/"
-        indir_red = r_red_data_dir + "test/"
+        indir_twt = "sm_w2v/r_twt_data/test/"
+        indir_red = "sm_w2v/r_red_data/test/"
 
         clean_sentences(indir_twt, "temp/")
         l = open("temp/twt.test").readline()
-        self.assertEqual(l, "got flu\n")
+        self.assertEqual(l, "got flu \n")
 
         clean_sentences(indir_red, "temp/")
         l = open("temp/red.test").readline()
-        self.assertEqual(l, "pale color always style\n")
+        print(l)
+        self.assertTrue("compression ratio theoretically" in l)
 
-class TestIntegration(unittest.TestCase):
-    """
-    Integration test the pipeline:
-        1) download (twitter)
-        2) clean (twitter and reddit)
-        3) train w2v model and make frequency tables (twitter and reddit)
-    """
+    def test_train_model(self):
+        twt_model_fname="temp/twt_word.model"
 
-    # TODO
-    # def test_clean(self):
+        make_model(itertools.islice(cleaned_sentences_twt, 0, 1000),
+                   twt_model_fname,
+                   size=100, # dimension of word vecs
+                   window=5, # context size
+                   min_count=100, #words repeated less than this are discarded
+                   workers=6, # number of threads
+                   seed=1
+                  )
+        model = Word2Vec.load(twt_model_fname)
 
-    # TODO
-    # def test_train(self):
+    # this requires a model and a query word
+    def test_word_freq_table(self):
+        model = Word2Vec.load("temp/twt_word.model")
+        rel_wds = model.most_similar(positive=['hiv'], topn=10)
+
+        count_related_words_normalized(rel_wds,
+               "sm_w2v/c_twt_data/",
+               "temp/twt_hiv_wdfreq.csv")
 
 if __name__ == "__main__":
     unittest.main()

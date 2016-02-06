@@ -9,19 +9,13 @@ from os import listdir
 import pandas as pd
 import numpy as np
 from gensim.models import Word2Vec
+import gensim
 from nltk.corpus import stopwords
 
 # sklearn
 from sklearn.preprocessing import StandardScaler
 from sklearn.cluster import SpectralClustering, KMeans
 from sklearn.decomposition import PCA
-
-# config stuff
-from sm_w2v.config_constants import (
-        r_twt_data_dir,
-        c_twt_data_dir
-        )
-
 
 # important data source for CDC weekly data:
 # http://www.cdc.gov/mmwr/mmwr_nd/nd_data_tables.html
@@ -44,7 +38,7 @@ def obj_generator(data_dir):
                 obj = json.loads(line)
                 yield obj
 
-twts = MakeIter(obj_generator, data_dir=r_twt_data_dir)
+twts = MakeIter(obj_generator, data_dir="sm_w2v/r_twt_data/")
 
 def len_iterable(iterable):
     """
@@ -82,7 +76,7 @@ def clean_sentences(indir, outdir):
     '''
     for infile in os.listdir(indir):
         if not os.path.isdir(indir + infile):
-            f_out = open(outdir + infile.split(".")[0] + ".cltxt", "w")
+            f_out = open(outdir + infile.split(".")[0] + ".txt", "w")
             for l in open(indir + infile):
                 try:
                     obj = json.loads(l)
@@ -92,7 +86,8 @@ def clean_sentences(indir, outdir):
                         txt = obj['body']
                     clean_sentences = preprocess_txt(txt)
                     for sentence in clean_sentences:
-                        f_out.write(" ".join(sentence) + "\n")
+                        f_out.write(" ".join(sentence) + " ")
+                    f_out.write("\n")
                 except:
                     pass
 
@@ -106,7 +101,7 @@ def get_weeknum_frm_obj(obj):
     if 'created_at' in obj.keys():
         date_str = obj['created_at']
         dt = datetime.datetime.strptime(date_str, "%a %b %d %H:%M:%S +%f %Y")
-    else:
+    elif 'created_utc' in obj.keys():
         dt = datetime.datetime.fromtimestamp(int(obj['created_utc']))
     year, week = dt.isocalendar()[0], dt.isocalendar()[1]
     return "%d%02d" % (year, week)
@@ -130,9 +125,13 @@ def write_obj(obj, outdir):
 def temp_reformat():
     directory = "sm_w2v/r_twt_data/"
     for filename in os.listdir(directory):
-        for l in open(directory + filename):
-            obj = json.loads(l)
-            write_obj(obj, "temp/")
+        if not os.path.isdir(directory + filename):
+            for l in open(directory + filename):
+                try:
+                    obj = json.loads(l)
+                    write_obj(obj, "temp/")
+                except:
+                    pass
 
 def gen_cln_sent(data_dir):
     '''
@@ -140,26 +139,20 @@ def gen_cln_sent(data_dir):
     generator of (YYYYWW, sentences)
     '''
     for filename in os.listdir(data_dir):
-        for l in open(filename):
+        for l in open(data_dir + filename):
             yield l.split(" ")
 
 # make iterators of clean sentences
-cleaned_sentences_twt = MakeIter(gen_cln_sent, data_dir=c_twt_data_dir)
+cleaned_sentences_twt = MakeIter(gen_cln_sent, data_dir="sm_w2v/c_twt_data/")
+cleaned_sentences_red = MakeIter(gen_cln_sent, data_dir="sm_w2v/c_twt_data/")
 
-
-def make_model(cleaned_sentences, word_type, **kwargs):
+def make_model(cleaned_sentences, fname, **kwargs):
     """
     Make a word2vec `model`
     """
+    model = Word2Vec(sentences=cleaned_sentences, **kwargs)
+    model.save(fname)
 
-    if word_type == "word":
-        sentences = cleaned_sentences
-    elif word_type == "phrase":
-        bigram_transformed = gensim.models.Phrases(sentences)
-        sentences = bigram_transformed[sentences]
-
-    model = Word2Vec(sentences=sentences, **kwargs)
-    return model
 
 # Do word frequency count
 def flatten_list(list_of_lists):
@@ -198,13 +191,13 @@ coord_twts = (twt for twt in twts if twt['coordinates'] != None)
 def get_weeknum_from_filename(filename):
     return filename.split(".")[0]
 
-def count_related_words_normalized(rel_wds, data_dir):
+def count_related_words_normalized(rel_wds, data_dir, out_fname):
     """
     Given a set of related words, and a clean data directory,
     Make a pandas dataframe that represents a frequency table.
     """
     related_words = [wd[0] for wd in rel_wds]
-    filenames = [f for f in listdir(data_dir) if isfile(join(data_dir, f))]
+    filenames = [f for f in listdir(data_dir) if os.path.isfile(data_dir + f)]
     week_nums = sorted([get_weeknum_from_filename(name) for name in filenames])
     total_tweets_per_week = dict()
     count_word_week = pd.DataFrame(
@@ -216,9 +209,6 @@ def count_related_words_normalized(rel_wds, data_dir):
         week_num = get_weeknum_from_filename(fname)
         with open(data_dir + fname) as f:
             for line in f:
-
-                twt = json.loads(line)
-
                 # update the tweet count (per week) for normalization purposes
                 if week_num in total_tweets_per_week:
                     total_tweets_per_week[week_num] +=1
@@ -227,13 +217,13 @@ def count_related_words_normalized(rel_wds, data_dir):
 
                 # update related word occurence count
                 for wrd in related_words:
-                    if wrd in twt['text']:
+                    if wrd in line:
                         count_word_week[wrd][week_num] += 1
     # here is the normalization
     for i, week_num in enumerate(week_nums):
         count_word_week.iloc[i,:] = (count_word_week.iloc[i,:] /
             total_tweets_per_week[week_num])
 
-    return count_word_week
+    count_word_week.to_csv(out_fname)
 
 
