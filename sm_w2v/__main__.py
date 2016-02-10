@@ -4,8 +4,14 @@ import sys
 from tweepy.streaming import StreamListener
 from tweepy import OAuthHandler, Stream
 
+from gensim.models import Word2Vec
+
 from sm_w2v.tokens import CONSUMER_KEY, CONSUMER_SECRET, TOKEN_KEY, TOKEN_SECRET
-from sm_w2v.utils import write_obj, clean_sentences
+from sm_w2v.utils import (
+        write_obj, clean_sentences, make_model, cleaned_sentences_twt, cleaned_sentences_red,
+        count_related_words_normalized
+        )
+
 
 # The list of relevant disease keywords to track
 track = ['hiv', 'aids', 'pre-exposure', 'prep', 'prophylaxis',
@@ -67,7 +73,7 @@ def run_clean():
     """
     print("cleaning...")
     clean_sentences("sm_w2v/r_twt_data/", "sm_w2v/c_twt_data/")
-    clean_sentences("sm_w2v/r_red_data", "sm_w2v/c_red_data")
+    #clean_sentences("sm_w2v/r_red_data", "sm_w2v/c_red_data")
     print("done cleaning.")
 
 def run_train():
@@ -81,14 +87,14 @@ def run_train():
                size=100, # dimension of word vecs
                window=5, # context size
                min_count=100, #words repeated less than this are discarded
-               workers=6 # number of threads
+               workers=5 # number of threads
               )
     make_model(cleaned_sentences_red,
               "sm_w2v/models_freq_tables/red.model",
               size=100, # dimension of word vecs
               window=5, # context size
               min_count=100, #words repeated less than this are discarded
-              workers=6 # number of threads
+              workers=5 # number of threads
               )
     print("done training.")
 
@@ -100,25 +106,25 @@ def run_wdfrq():
     print("running word freq...")
 
     # twitter
-    model_twt = Word2Vec.load("temp/twt.model")
-    rel_words = model.most_similar(positive=['hiv'], topn=10)
-    count_related_words_normalized(rel_wds,
+    model_twt = Word2Vec.load("sm_w2v/models_freq_tables/twt.model")
+    rel_words = model_twt.most_similar(positive=['hiv'], topn=10)
+    count_related_words_normalized(rel_words,
             "sm_w2v/c_twt_data/",
             "sm_w2v/models_freq_tables/twt_hiv_wdfreq.csv")
-    rel_words = model.most_similar(positive=['prophylaxis'], topn=10)
-    count_related_words_normalized(rel_wds,
+    rel_words = model_twt.most_similar(positive=['prophylaxis'], topn=10)
+    count_related_words_normalized(rel_words,
             "sm_w2v/c_twt_data/",
             "sm_w2v/models_freq_tables/twt_prophylaxis_wdfreq.csv")
 
 
     # reddit
-    model_red= Word2Vec.load("temp/red.model")
-    rel_words = model.most_similar(positive=['hiv'], topn=10)
-    count_related_words_normalized(rel_wds,
+    model_red= Word2Vec.load("sm_w2v/models_freq_tables/red.model")
+    rel_words = model_red.most_similar(positive=['hiv'], topn=10)
+    count_related_words_normalized(rel_words,
             "sm_w2v/c_red_data/",
             "sm_w2v/models_freq_tables/red_hiv_wdfreq.csv")
-    rel_words = model.most_similar(positive=['prophylaxis'], topn=10)
-    count_related_words_normalized(rel_wds,
+    rel_words = model_red.most_similar(positive=['prophylaxis'], topn=10)
+    count_related_words_normalized(rel_words,
             "sm_w2v/c_red_data/",
             "sm_w2v/models_freq_tables/red_prophylaxis_wdfreq.csv")
 

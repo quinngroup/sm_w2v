@@ -78,18 +78,15 @@ def clean_sentences(indir, outdir):
         if not os.path.isdir(indir + infile):
             f_out = open(outdir + infile.split(".")[0] + ".txt", "w")
             for l in open(indir + infile):
-                try:
-                    obj = json.loads(l)
-                    if 'text' in obj.keys():
-                        txt = obj['text']
-                    else:
-                        txt = obj['body']
-                    clean_sentences = preprocess_txt(txt)
-                    for sentence in clean_sentences:
-                        f_out.write(" ".join(sentence) + " ")
-                    f_out.write("\n")
-                except:
-                    pass
+                obj = json.loads(l)
+                if 'text' in obj.keys():
+                    txt = obj['text']
+                else:
+                    txt = obj['body']
+                clean_sentences = preprocess_txt(txt)
+                for sentence in clean_sentences:
+                    f_out.write(" ".join(sentence) + " ")
+                f_out.write("\n")
 
 def get_weeknum_frm_obj(obj):
     """
@@ -122,16 +119,12 @@ def write_obj(obj, outdir):
 
 # delete this after running once
 # This has been tested
-def temp_reformat():
-    directory = "sm_w2v/r_twt_data/"
-    for filename in os.listdir(directory):
-        if not os.path.isdir(directory + filename):
-            for l in open(directory + filename):
-                try:
-                    obj = json.loads(l)
-                    write_obj(obj, "temp/")
-                except:
-                    pass
+def temp_reformat(indir, outdir):
+    for filename in os.listdir(indir):
+        if not os.path.isdir(indir + filename):
+            for l in open(indir + filename):
+                obj = json.loads(l)
+                write_obj(obj, outdir)
 
 def gen_cln_sent(data_dir):
     '''
