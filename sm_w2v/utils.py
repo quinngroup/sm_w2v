@@ -12,11 +12,6 @@ from gensim.models import Word2Vec
 import gensim
 from nltk.corpus import stopwords
 
-# sklearn
-from sklearn.preprocessing import StandardScaler
-from sklearn.cluster import SpectralClustering, KMeans
-from sklearn.decomposition import PCA
-
 # important data source for CDC weekly data:
 # http://www.cdc.gov/mmwr/mmwr_nd/nd_data_tables.html
 class MakeIter(object):
@@ -31,7 +26,7 @@ def obj_generator(data_dir):
     load all json objs (one per line) from file as a
     generator (cuz big data, small memory)
     '''
-    filenames = [f for f in listdir(data_dir) if isfile(join(data_dir, f))]
+    filenames = [f for f in listdir(data_dir) if os.path.isfile(os.path.join(data_dir, f))]
     for fname in filenames:
         with open(data_dir + fname) as f:
             for line in f:
@@ -45,7 +40,7 @@ def len_iterable(iterable):
     Get the length of an iterable. Yes, this is
     (time) inefficent for large iterables
     """
-    return sum(1 for e in i)
+    return sum(1 for e in iterable)
 
 # this is the stop words collection
 eng_stopwords = stopwords.words('english')

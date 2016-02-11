@@ -1,9 +1,19 @@
+import numpy as np
+import pandas as pd
 
 # plotting toolkits
 from mpl_toolkits.basemap import Basemap
 from mpl_toolkits.mplot3d import Axes3D, proj3d
 import matplotlib.pyplot as plt
+from matplotlib.colors import Colormap
 import seaborn as sb
+
+# sklearn
+from sklearn.preprocessing import StandardScaler
+from sklearn.cluster import SpectralClustering, KMeans
+from sklearn.decomposition import PCA
+from sklearn.manifold import TSNE
+
 
 # do map plot
 def plot_map(twts, title='default title'):
@@ -52,11 +62,7 @@ def make_heatmap_w2vrelated(model, rel_wds):
                      index=names)
     sb.clustermap(df, linewidths=.5,)
 
-def scikit_pca(model, cluster="kmeans"):
-    """
-    Given a word2vec model and a cluster (choice of "kmeans" or "spectral")
-    Make a plot of all word-vectors in the model.
-    """
+def make_data_matrix(model):
     # the word2vec vectors data matrix
     keys = list(model.vocab.keys())
     num_words_in_vocab = len(keys)
@@ -64,10 +70,19 @@ def scikit_pca(model, cluster="kmeans"):
 
     # X is the data matrix
     X = np.zeros((num_words_in_vocab, size_of_vecs))
+
+    return X, keys
+
+
+def scikit_pca(model, rel_wds, cluster="kmeans"):
+    """
+    Given a word2vec model and a cluster (choice of "kmeans" or "spectral")
+    Make a plot of all word-vectors in the model.
+    """
+    X, keys = make_data_matrix(model)
+
     for i, key in enumerate(keys):
         X[i,] = model[key]
-
-    labels = [0] * num_words_in_vocab
 
     if cluster == "kmeans":
         k_means = KMeans(n_clusters=8)
@@ -77,19 +92,60 @@ def scikit_pca(model, cluster="kmeans"):
         sp_clust = SpectralClustering()
         labels = sp_clust.fit_predict(X)
 
-    # Standardize
-    X_std = StandardScaler().fit_transform(X)
-
     # PCA
+    X_std = StandardScaler().fit_transform(X)
     sklearn_pca = PCA(n_components=2)
     X_transf = sklearn_pca.fit_transform(X_std)
 
-    # Plot the data
-    plt.scatter(X_transf[:,0], X_transf[:,1], c=labels)
-    plt.title('PCA via scikit-learn (using SVD)')
+    title = 'PCA via scikit-learn (using SVD)'
+    scatter_plot(X_transf[:,0], X_transf[:,1],  rel_wds, labels, title, keys)
+
+    return sklearn_pca.explained_variance_ratio_
+
+def scatter_plot(x, y, rel_wds, labels, title, keys):
+    # make the alpha and txt_labels
+    rwds = [wd[0] for wd in rel_wds]
+
+    txt_labels = []
+    x_high_alpha = []
+    y_high_alpha = []
+    labels_high_alpha = []
+    for i in range(len(keys)):
+        if keys[i] in rwds:
+            txt_labels.append(keys[i])
+            x_high_alpha.append(x[i])
+            y_high_alpha.append(y[i])
+            labels_high_alpha.append(labels[i])
+
+    # Plot all the data with low alpha
+    fig, ax = plt.subplots()
+    ax.scatter(x, y, c=labels, alpha=0.1, cmap=plt.get_cmap("nipy_spectral"))
+    # Plot data with high alpha
+    ax.scatter(x_high_alpha, y_high_alpha, c=labels_high_alpha,
+            alpha=1.0, cmap=plt.get_cmap("nipy_spectral"))
+    for i, txt in enumerate(txt_labels):
+        ax.annotate(txt, (x_high_alpha[i], y_high_alpha[i]))
     plt.show()
 
-    return X, sklearn_pca.explained_variance_ratio_
+def make_tsne_plot(model, rel_wds):
+
+    X, keys = make_data_matrix(model)
+
+    # first we actually do PCA to reduce the
+    # dimensionality to make tSNE easier to calculate
+    X_std = StandardScaler().fit_transform(X)
+    sklearn_pca = PCA(n_components=2)
+    X = sklearn_pca.fit_transform(X_std)[:,:4]
+
+    # Do tSNE
+    tsne = TSNE(n_components=2, random_state=0)
+    X_transf = tsne.fit_transform(X)
+
+    k_means = KMeans(n_clusters=8)
+    labels = k_means.fit_predict(X_transf)
+
+    title="t-SNE plot"
+    scatter_plot(X_transf[:,0], X_transf[:,1],  rel_wds, labels, title, keys)
 
 
 def make_histogram(X):
