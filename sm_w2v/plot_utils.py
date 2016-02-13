@@ -74,7 +74,7 @@ def make_data_matrix(model):
     return X, keys
 
 
-def scikit_pca(model, rel_wds, cluster="kmeans"):
+def scikit_pca(model, rel_wds, plot_lims, title, cluster="kmeans"):
     """
     Given a word2vec model and a cluster (choice of "kmeans" or "spectral")
     Make a plot of all word-vectors in the model.
@@ -97,12 +97,11 @@ def scikit_pca(model, rel_wds, cluster="kmeans"):
     sklearn_pca = PCA(n_components=2)
     X_transf = sklearn_pca.fit_transform(X_std)
 
-    title = 'PCA via scikit-learn (using SVD)'
-    scatter_plot(X_transf[:,0], X_transf[:,1],  rel_wds, labels, title, keys)
+    scatter_plot(X_transf[:,0], X_transf[:,1],  rel_wds, labels, title, keys, plot_lims)
 
     return sklearn_pca.explained_variance_ratio_
 
-def scatter_plot(x, y, rel_wds, labels, title, keys):
+def scatter_plot(x, y, rel_wds, labels, title, keys, plot_lims):
     # make the alpha and txt_labels
     rwds = [wd[0] for wd in rel_wds]
 
@@ -119,33 +118,51 @@ def scatter_plot(x, y, rel_wds, labels, title, keys):
 
     # Plot all the data with low alpha
     fig, ax = plt.subplots()
-    ax.scatter(x, y, c=labels, alpha=0.1, cmap=plt.get_cmap("nipy_spectral"))
+    ax.scatter(x, y, c=labels, alpha=0.01, cmap=plt.get_cmap("nipy_spectral"))
     # Plot data with high alpha
     ax.scatter(x_high_alpha, y_high_alpha, c=labels_high_alpha,
             alpha=1.0, cmap=plt.get_cmap("nipy_spectral"))
     for i, txt in enumerate(txt_labels):
         ax.annotate(txt, (x_high_alpha[i], y_high_alpha[i]))
+    plt.axis(plot_lims)
+    plt.savefig(title + ".pdf", format="pdf")
     plt.show()
 
-def make_tsne_plot(model, rel_wds):
+def make_tsne_plot(model, rel_wds, plot_lims, title):
 
+    dim = 30
     X, keys = make_data_matrix(model)
 
     # first we actually do PCA to reduce the
     # dimensionality to make tSNE easier to calculate
     X_std = StandardScaler().fit_transform(X)
     sklearn_pca = PCA(n_components=2)
-    X = sklearn_pca.fit_transform(X_std)[:,:4]
+    X = sklearn_pca.fit_transform(X_std)[:,:dim]
+
+    # do downsample
+    k = 5000
+    sample = []
+    important_words = []
+    r_wds = [word[0] for word in rel_wds]
+    for i, key in enumerate(keys):
+        if key in r_wds:
+            sample.append(i)
+    sample = np.concatenate((np.array(sample),
+                np.random.choice(len(keys), k-10, replace = False),
+             ))
+    X = X[sample,:]
+    keys = [keys[i] for i in sample]
+
+
 
     # Do tSNE
-    tsne = TSNE(n_components=2, random_state=0)
+    tsne = TSNE(n_components=2, random_state=0, metric="cosine")
     X_transf = tsne.fit_transform(X)
 
     k_means = KMeans(n_clusters=8)
     labels = k_means.fit_predict(X_transf)
 
-    title="t-SNE plot"
-    scatter_plot(X_transf[:,0], X_transf[:,1],  rel_wds, labels, title, keys)
+    scatter_plot(X_transf[:,0], X_transf[:,1],  rel_wds, labels, title, keys, plot_lims)
 
 
 def make_histogram(X):

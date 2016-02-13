@@ -132,7 +132,7 @@ def gen_cln_sent(data_dir):
 
 # make iterators of clean sentences
 cleaned_sentences_twt = MakeIter(gen_cln_sent, data_dir="sm_w2v/c_twt_data/")
-cleaned_sentences_red = MakeIter(gen_cln_sent, data_dir="sm_w2v/c_twt_data/")
+cleaned_sentences_red = MakeIter(gen_cln_sent, data_dir="sm_w2v/c_red_data/")
 
 def make_model(cleaned_sentences, fname, **kwargs):
     """
