@@ -89,13 +89,13 @@ def run_train():
                min_count=100, #words repeated less than this are discarded
                workers=5 # number of threads
               )
-    make_model(cleaned_sentences_red,
-              "sm_w2v/models_freq_tables/red.model",
-              size=100, # dimension of word vecs
-              window=5, # context size
-              min_count=100, #words repeated less than this are discarded
-              workers=5 # number of threads
-              )
+    #make_model(cleaned_sentences_red,
+    #          "sm_w2v/models_freq_tables/red.model",
+    #          size=100, # dimension of word vecs
+    #          window=5, # context size
+    #          min_count=100, #words repeated less than this are discarded
+    #          workers=5 # number of threads
+    #          )
     print("done training.")
 
 def run_wdfrq():
@@ -118,15 +118,15 @@ def run_wdfrq():
 
 
     # reddit
-    model_red= Word2Vec.load("sm_w2v/models_freq_tables/red.model")
-    rel_words = model_red.most_similar(positive=['hiv'], topn=10)
-    count_related_words_normalized(rel_words,
-            "sm_w2v/c_red_data/",
-            "sm_w2v/models_freq_tables/red_hiv_wdfreq.csv")
-    rel_words = model_red.most_similar(positive=['prophylaxis'], topn=10)
-    count_related_words_normalized(rel_words,
-            "sm_w2v/c_red_data/",
-            "sm_w2v/models_freq_tables/red_prophylaxis_wdfreq.csv")
+    #model_red= Word2Vec.load("sm_w2v/models_freq_tables/red.model")
+    #rel_words = model_red.most_similar(positive=['hiv'], topn=10)
+    #count_related_words_normalized(rel_words,
+    #        "sm_w2v/c_red_data/",
+    #        "sm_w2v/models_freq_tables/red_hiv_wdfreq.csv")
+    #rel_words = model_red.most_similar(positive=['prophylaxis'], topn=10)
+    #count_related_words_normalized(rel_words,
+    #        "sm_w2v/c_red_data/",
+    #        "sm_w2v/models_freq_tables/red_prophylaxis_wdfreq.csv")
 
     print("done with word freq.")
 

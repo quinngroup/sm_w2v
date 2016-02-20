@@ -1,4 +1,5 @@
-
+backports-abc==0.4
+basemap==1.0.7
 boto==2.39.0
 bz2file==0.98
 cycler==0.9.0
@@ -49,3 +50,4 @@ terminado==0.6
 tornado==4.3
 traitlets==4.1.0
 tweepy==3.5.0
+wheel==0.26.0
