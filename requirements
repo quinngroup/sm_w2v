@@ -1,5 +1,4 @@
 backports-abc==0.4
-basemap==1.0.7
 boto==2.39.0
 bz2file==0.98
 cycler==0.9.0

@@ -16,7 +16,7 @@ from sklearn.manifold import TSNE
 
 
 # do map plot
-def plot_map(twts, title='default title'):
+def plot_map_twts(twts, title='default title'):
     """
     Given an iterable of tweets, make a dot map over North America.
     """
@@ -74,6 +74,7 @@ def make_data_matrix(model):
     return X, keys
 
 
+# need to fix with new 'scatter'
 def scikit_pca(model, rel_wds, plot_lims, title, cluster="kmeans"):
     """
     Given a word2vec model and a cluster (choice of "kmeans" or "spectral")
@@ -101,33 +102,44 @@ def scikit_pca(model, rel_wds, plot_lims, title, cluster="kmeans"):
 
     return sklearn_pca.explained_variance_ratio_
 
-def scatter_plot(x, y, rel_wds, labels, title, keys, plot_lims):
-    # make the alpha and txt_labels
-    rwds = [wd[0] for wd in rel_wds]
+def scatter_plot(x, y, alpha_high, alpha_low, clust_labels, text_annotations, down_samp_rate, title, rand_seed=None, plot_lims=None):
 
+    # set up the high alpha labeled plot
     txt_labels = []
     x_high_alpha = []
     y_high_alpha = []
     labels_high_alpha = []
-    for i in range(len(keys)):
-        if keys[i] in rwds:
-            txt_labels.append(keys[i])
+    text_high_alpha = []
+    for i in range(len(x)):
+        if(text_annotations[i] != ""):
             x_high_alpha.append(x[i])
             y_high_alpha.append(y[i])
-            labels_high_alpha.append(labels[i])
+            labels_high_alpha.append(clust_labels[i])
+            text_high_alpha.append(text_annotations[i])
 
-    # Plot all the data with low alpha
+    # do down sample
+    if(rand_seed):
+        np.random.seed(rand_seed)
+    take = np.random.choice(list(range(len(x))), int(len(x)*down_samp_rate), replace=False)
+    x = np.array(x)[take]
+    y = np.array(y)[take]
+    clust_labels = np.array(clust_labels)[take]
+
+    # Plot all the data with low alpha (in the background)
     fig, ax = plt.subplots()
-    ax.scatter(x, y, c=labels, alpha=0.01, cmap=plt.get_cmap("nipy_spectral"))
+    ax.scatter(x, y, alpha=alpha_low, c=clust_labels, cmap=plt.get_cmap("nipy_spectral"))
+
     # Plot data with high alpha
     ax.scatter(x_high_alpha, y_high_alpha, c=labels_high_alpha,
-            alpha=1.0, cmap=plt.get_cmap("nipy_spectral"))
-    for i, txt in enumerate(txt_labels):
+            alpha=alpha_high, cmap=plt.get_cmap("nipy_spectral"))
+    for i, txt in enumerate(text_high_alpha):
         ax.annotate(txt, (x_high_alpha[i], y_high_alpha[i]))
-    plt.axis(plot_lims)
+    if(plot_lims):
+        plt.axis(plot_lims)
     plt.savefig(title + ".pdf", format="pdf")
     plt.show()
 
+# need to fix with new 'scatter'
 def make_tsne_plot(model, rel_wds, plot_lims, title):
 
     dim = 30
@@ -163,17 +175,5 @@ def make_tsne_plot(model, rel_wds, plot_lims, title):
     labels = k_means.fit_predict(X_transf)
 
     scatter_plot(X_transf[:,0], X_transf[:,1],  rel_wds, labels, title, keys, plot_lims)
-
-
-def make_histogram(X):
-    """
-    Given a numpy matrix, plot a histogram
-    """
-    hist, bins = np.histogram(X, bins=50)
-    width = 0.7 * (bins[1] - bins[0])
-    center = (bins[:-1] + bins[1:]) / 2
-    plt.bar(center, hist, align='center', width=width)
-    plt.show()
-
 
 

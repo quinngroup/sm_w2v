@@ -1,0 +1,6 @@
+1) refactor:
+	delete everything, do cleaning as in Doc2Vec i.e. lowercase, and remove all non-word characters except ,.?! which are treated as seperate words.
+
+2) Doc2Vec
+	- Doc ID
+	- user id

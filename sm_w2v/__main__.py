@@ -1,17 +1,12 @@
 import json
 import sys
+import datetime
 
 from tweepy.streaming import StreamListener
 from tweepy import OAuthHandler, Stream
 
-from gensim.models import Word2Vec
-
+from sm_w2v.utils import clean_text
 from sm_w2v.tokens import CONSUMER_KEY, CONSUMER_SECRET, TOKEN_KEY, TOKEN_SECRET
-from sm_w2v.utils import (
-        write_obj, clean_sentences, make_model, cleaned_sentences_twt, cleaned_sentences_red,
-        count_related_words_normalized
-        )
-
 
 # The list of relevant disease keywords to track
 track = ['hiv', 'aids', 'pre-exposure', 'prep', 'prophylaxis',
@@ -42,7 +37,12 @@ class StdOutListener(StreamListener):
     # write streaming data to data.json
     def on_data(self, data):
         twt = json.loads(data)
-        write_obj(twt, "sm_w2v/r_twt_data/")
+        sdate = twt['created_at']
+        pydate = datetime.datetime.strptime(sdate, '%a %b %d %H:%M:%S %z %Y')
+        yyyyww = "%d%02d" % (pydate.isocalendar()[0], pydate.isocalendar()[1])
+        twt['weeknum'] = yyyyww
+        with open('sm_w2v/r_twitter.json', 'a') as f:
+            f.write(json.dumps(twt) + '\n')
         return True
 
 def run_download():
@@ -72,8 +72,22 @@ def run_clean():
         2) clean raw data (remove stopwords and punctuation)
     """
     print("cleaning...")
-    clean_sentences("sm_w2v/r_twt_data/", "sm_w2v/c_twt_data/")
-    #clean_sentences("sm_w2v/r_red_data", "sm_w2v/c_red_data")
+    with open('data/r_twitter.json') as f_in, open('data/c_twitter.json', 'w') as f_out:
+        for l in f_in:
+            try:
+                twt = json.loads(l)
+            except:
+                break
+
+            d = dict()
+            d['c_text'] = clean_text(twt['text'])
+            d['tags'] = [twt['user']['name']] + \
+                [hashtag['text'] for hashtag in twt['entities']['hashtags']]
+            d['weeknum'] = twt['weeknum']
+            #coordinates HERE
+            if twt['coordinates']:
+                d['coordinates'] = twt['coordinates']['coordinates']
+            f_out.write(json.dumps(d) + '\n')
     print("done cleaning.")
 
 def run_train():
@@ -82,20 +96,6 @@ def run_train():
         3) Train word2vec and save model
     """
     print("training...")
-    make_model(cleaned_sentences_twt,
-               "sm_w2v/models_freq_tables/twt.model",
-               size=100, # dimension of word vecs
-               window=5, # context size
-               min_count=100, #words repeated less than this are discarded
-               workers=5 # number of threads
-              )
-    #make_model(cleaned_sentences_red,
-    #          "sm_w2v/models_freq_tables/red.model",
-    #          size=100, # dimension of word vecs
-    #          window=5, # context size
-    #          min_count=100, #words repeated less than this are discarded
-    #          workers=5 # number of threads
-    #          )
     print("done training.")
 
 def run_wdfrq():
@@ -104,30 +104,6 @@ def run_wdfrq():
         4) Get word frequency of `related words` and save
     """
     print("running word freq...")
-
-    # twitter
-    model_twt = Word2Vec.load("sm_w2v/models_freq_tables/twt.model")
-    rel_words = model_twt.most_similar(positive=['hiv'], topn=10)
-    count_related_words_normalized(rel_words,
-            "sm_w2v/c_twt_data/",
-            "sm_w2v/models_freq_tables/twt_hiv_wdfreq.csv")
-    rel_words = model_twt.most_similar(positive=['prophylaxis'], topn=10)
-    count_related_words_normalized(rel_words,
-            "sm_w2v/c_twt_data/",
-            "sm_w2v/models_freq_tables/twt_prophylaxis_wdfreq.csv")
-
-
-    # reddit
-    #model_red= Word2Vec.load("sm_w2v/models_freq_tables/red.model")
-    #rel_words = model_red.most_similar(positive=['hiv'], topn=10)
-    #count_related_words_normalized(rel_words,
-    #        "sm_w2v/c_red_data/",
-    #        "sm_w2v/models_freq_tables/red_hiv_wdfreq.csv")
-    #rel_words = model_red.most_similar(positive=['prophylaxis'], topn=10)
-    #count_related_words_normalized(rel_words,
-    #        "sm_w2v/c_red_data/",
-    #        "sm_w2v/models_freq_tables/red_prophylaxis_wdfreq.csv")
-
     print("done with word freq.")
 
 if __name__ == '__main__':
