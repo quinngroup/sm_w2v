@@ -5,7 +5,7 @@ import datetime
 from tweepy.streaming import StreamListener
 from tweepy import OAuthHandler, Stream
 
-from sm_w2v.utils import clean_text
+from sm_w2v.utils import clean_text, clean_tweet
 from sm_w2v.tokens import CONSUMER_KEY, CONSUMER_SECRET, TOKEN_KEY, TOKEN_SECRET
 
 # The list of relevant disease keywords to track
@@ -41,7 +41,7 @@ class StdOutListener(StreamListener):
         pydate = datetime.datetime.strptime(sdate, '%a %b %d %H:%M:%S %z %Y')
         yyyyww = "%d%02d" % (pydate.isocalendar()[0], pydate.isocalendar()[1])
         twt['weeknum'] = yyyyww
-        with open('sm_w2v/r_twitter.json', 'a') as f:
+        with open('data/r_twitter.json', 'a') as f:
             f.write(json.dumps(twt) + '\n')
         return True
 
@@ -73,21 +73,15 @@ def run_clean():
     """
     print("cleaning...")
     with open('data/r_twitter.json') as f_in, open('data/c_twitter.json', 'w') as f_out:
-        for l in f_in:
-            try:
-                twt = json.loads(l)
-            except:
-                break
+        for i, l in enumerate(f_in):
+            if i % 100 == 0: # down sample for memory purposes
+                try:
+                    twt = json.loads(l)
+                except:
+                    break
 
-            d = dict()
-            d['c_text'] = clean_text(twt['text'])
-            d['tags'] = [twt['user']['name']] + \
-                [hashtag['text'] for hashtag in twt['entities']['hashtags']]
-            d['weeknum'] = twt['weeknum']
-            #coordinates HERE
-            if twt['coordinates']:
-                d['coordinates'] = twt['coordinates']['coordinates']
-            f_out.write(json.dumps(d) + '\n')
+                cln_twt = clean_tweet(twt, i)
+                f_out.write(json.dumps(cln_twt) + '\n')
     print("done cleaning.")
 
 def run_train():
