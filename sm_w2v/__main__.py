@@ -74,12 +74,12 @@ def run_clean():
     print("cleaning...")
     with open('data/r_twitter.json') as f_in, open('data/c_twitter.json', 'w') as f_out:
         for i, l in enumerate(f_in):
-            if i % 100 == 0: # down sample for memory purposes
-                try:
-                    twt = json.loads(l)
-                except:
-                    break
+            try:
+                twt = json.loads(l)
+            except:
+                break
 
+            if twt['coordinates'] or (i % 5 == 0):
                 cln_twt = clean_tweet(twt, i)
                 f_out.write(json.dumps(cln_twt) + '\n')
     print("done cleaning.")
