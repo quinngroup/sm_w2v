@@ -22,7 +22,7 @@ class TestPlotUtils(unittest.TestCase):
         text_annotations = [""]*90 + ["odd"]*10
         down_samp_rate = 0.5
         title = "scatter_test"
-        plot_lims=[-4,4,-4,4]
+        plot_lims = [-4,4,-4,4]
 
         scatter_plot(x, y, alpha_high, alpha_low,
                 clust_labels, text_annotations,

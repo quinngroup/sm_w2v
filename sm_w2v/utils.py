@@ -19,6 +19,7 @@ def clean_text(text):
     clean = clean.replace('?', ' ? ')
     clean = clean.replace('!', ' ! ')
 
+    clean = clean.lower()
     word_list = clean.split()
     words = " ".join(word_list)
     return  words
@@ -27,8 +28,8 @@ def clean_tweet(twt_obj, i):
     cln_twt = dict()
     cln_twt['index'] = i
     cln_twt['c_text'] = clean_text(twt_obj['text'])
-    cln_twt['tags'] = [twt_obj['user']['name']] + \
-        [hashtag['text'] for hashtag in twt_obj['entities']['hashtags']]
+    cln_twt['tags'] = ['user--' + twt_obj['user']['name']] + \
+        ['#' + hashtag['text'].lower() for hashtag in twt_obj['entities']['hashtags']]
     cln_twt['weeknum'] = twt_obj['weeknum']
     #coordinates HERE
     if twt_obj['coordinates']:
