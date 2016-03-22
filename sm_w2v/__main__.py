@@ -5,7 +5,7 @@ import datetime
 from tweepy.streaming import StreamListener
 from tweepy import OAuthHandler, Stream
 
-from sm_w2v.utils import clean_text, clean_tweet
+from sm_w2v.utils import clean_text, clean_tweet, relevant_twt
 from sm_w2v.tokens import CONSUMER_KEY, CONSUMER_SECRET, TOKEN_KEY, TOKEN_SECRET
 
 # The list of relevant disease keywords to track
@@ -79,26 +79,10 @@ def run_clean():
             except:
                 break
 
-            if twt['coordinates'] or (i % 5 == 0):
-                cln_twt = clean_tweet(twt, i)
+            if i % 2 and relevant_twt(twt):
+                cln_twt = clean_tweet(twt)
                 f_out.write(json.dumps(cln_twt) + '\n')
     print("done cleaning.")
-
-def run_train():
-    """
-    This function runs the pipeline:
-        3) Train word2vec and save model
-    """
-    print("training...")
-    print("done training.")
-
-def run_wdfrq():
-    """
-    This function runs the pipeline:
-        4) Get word frequency of `related words` and save
-    """
-    print("running word freq...")
-    print("done with word freq.")
 
 if __name__ == '__main__':
     run = sys.argv[1]
@@ -107,9 +91,5 @@ if __name__ == '__main__':
         run_download()
     elif run == "clean":
         run_clean()
-    elif run == "train":
-        run_train()
-    elif run == "wdfrq":
-        run_wdfrq()
     else:
         print("\n\n Sorry, that wasn't a valid choice. The choices are (download, clean, train, wdfrq)\n")

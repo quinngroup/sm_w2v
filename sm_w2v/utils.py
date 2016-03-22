@@ -24,15 +24,28 @@ def clean_text(text):
     words = " ".join(word_list)
     return  words
 
-def clean_tweet(twt_obj, i):
+def clean_tweet(twt):
     cln_twt = dict()
-    cln_twt['index'] = i
-    cln_twt['c_text'] = clean_text(twt_obj['text'])
-    cln_twt['tags'] = ['user--' + twt_obj['user']['name']] + \
-        ['#' + hashtag['text'].lower() for hashtag in twt_obj['entities']['hashtags']]
-    cln_twt['weeknum'] = twt_obj['weeknum']
+
+    cln_twt['id'] = twt['id']
+    cln_twt['c_text'] = clean_text(twt['text'])
+    cln_twt['user_id_str'] = twt['user']['id_str']
+    cln_twt['tags'] = ['user--' + twt['user']['name'] + '--' + cln_twt['user_id_str']] + \
+        ['#' + hashtag['text'].lower() for hashtag in twt['entities']['hashtags']]
+    cln_twt['weeknum'] = twt['weeknum']
     #coordinates HERE
-    if twt_obj['coordinates']:
-        cln_twt['coordinates'] = twt_obj['coordinates']['coordinates']
+    if twt['coordinates']:
+        cln_twt['coordinates'] = twt['coordinates']['coordinates']
     return cln_twt
 
+def relevant_twt(twt):
+    key_words = ['hiv', 'aids', 'truvada', 'prep', 'prophylaxis',
+                 'imtesting', 'sexwork', 'gay']
+    lcase_txt = twt['text'].lower()
+    # if twt['coordinates']:
+    #     return True
+
+    for word in key_words:
+        if word in lcase_txt:
+            return True
+    return False
