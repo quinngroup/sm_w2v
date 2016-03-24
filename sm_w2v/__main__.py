@@ -79,7 +79,7 @@ def run_clean():
             except:
                 break
 
-            if i % 2 and relevant_twt(twt):
+            if (not (i % 3)) and relevant_twt(twt):
                 cln_twt = clean_tweet(twt)
                 f_out.write(json.dumps(cln_twt) + '\n')
     print("done cleaning.")

@@ -30,7 +30,7 @@ def clean_tweet(twt):
     cln_twt['id'] = twt['id']
     cln_twt['c_text'] = clean_text(twt['text'])
     cln_twt['user_id_str'] = twt['user']['id_str']
-    cln_twt['tags'] = ['user--' + twt['user']['name'] + '--' + cln_twt['user_id_str']] + \
+    cln_twt['tags'] = [twt['user']['name'] + '-*-' + cln_twt['user_id_str']] + \
         ['#' + hashtag['text'].lower() for hashtag in twt['entities']['hashtags']]
     cln_twt['weeknum'] = twt['weeknum']
     #coordinates HERE
