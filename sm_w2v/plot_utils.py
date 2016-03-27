@@ -18,7 +18,7 @@ from sklearn.manifold import TSNE
 # do map plot
 def plot_map_twts(twts, title='default title'):
     """
-    Given an iterable of tweets, make a dot map over North America.
+    Given an iterable of 'clean' tweets, make a dot map over North America.
     """
     fig1 = plt.figure()
     ax = fig1.add_subplot(111)
@@ -34,8 +34,8 @@ def plot_map_twts(twts, title='default title'):
     m.fillcontinents(color = 'coral', alpha=0.5)
     m.drawmapboundary()
 
-    lons = [twt['coordinates']['coordinates'][0] for twt in twts]
-    lats = [twt['coordinates']['coordinates'][1] for twt in twts]
+    lons = [twt['coordinates'][0] for twt in twts]
+    lats = [twt['coordinates'][1] for twt in twts]
     x,y = m(lons, lats)
 
     m.plot(x, y, 'bo', markersize=5)

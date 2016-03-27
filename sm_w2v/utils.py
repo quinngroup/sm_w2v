@@ -9,8 +9,7 @@ class MakeIter(object):
 
 def clean_text(text):
     clean = re.sub(r'http.*$', '', text)
-    regex = re.compile('[^a-zA-Z,\.!?\'#0-9\s\-_]')
-    clean = regex.sub('', clean)
+    clean = re.sub(r'[^a-zA-Z,\.!?\'#0-9\s\-_]', '', clean)
 
     clean = clean.replace('...', '.')
     clean = clean.replace('.', ' . ')
@@ -28,7 +27,7 @@ def clean_tweet(twt):
     cln_twt = dict()
 
     cln_twt['id'] = twt['id']
-    cln_twt['c_text'] = clean_text(twt['text'])
+    cln_twt['text'] = clean_text(twt['text'])
     cln_twt['user_id_str'] = twt['user']['id_str']
     cln_twt['tags'] = [twt['user']['name'] + '-*-' + cln_twt['user_id_str']] + \
         ['#' + hashtag['text'].lower() for hashtag in twt['entities']['hashtags']]
@@ -39,13 +38,18 @@ def clean_tweet(twt):
     return cln_twt
 
 def relevant_twt(twt):
-    key_words = ['hiv', 'aids', 'truvada', 'prep', 'prophylaxis',
-                 'imtesting', 'sexwork', 'gay']
-    lcase_txt = twt['text'].lower()
-    # if twt['coordinates']:
-    #     return True
+    key_words_lower = ['hiv', 'aids', 'truvada', 'prophylaxis',
+                       'imtesting', 'sexwork', 'gay']
+    key_words_w_case = ['PrEP']
 
-    for word in key_words:
+    for word in key_words_w_case:
+        if word in twt['text']:
+            return True
+
+    lcase_txt = twt['text'].lower()
+
+    for word in key_words_lower:
         if word in lcase_txt:
             return True
+
     return False
