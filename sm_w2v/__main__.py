@@ -75,6 +75,7 @@ def run_clean():
         2) clean raw data (remove stopwords and punctuation)
     """
     print("cleaning...")
+    ids = set()
     with open('data/r_twitter.json') as f_in, open('data/c_twitter.json', 'w') as f_out:
         for i, l in enumerate(f_in):
             try:
@@ -82,7 +83,8 @@ def run_clean():
             except:
                 break
 
-            if (i % 3 == 0) and relevant_twt(twt):
+            if (i % 3 == 0) and relevant_twt(twt) and (twt['id'] not in ids):
+                ids.add(twt['id'])
                 cln_twt = clean_tweet(twt)
                 f_out.write(json.dumps(cln_twt) + '\n')
     print("done cleaning.")
