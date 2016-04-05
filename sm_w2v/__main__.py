@@ -83,7 +83,7 @@ def run_clean():
             except:
                 break
 
-            if (i % 3 == 0) and relevant_twt(twt) and (twt['id'] not in ids):
+            if relevant_twt(twt) and (twt['id'] not in ids):
                 ids.add(twt['id'])
                 cln_twt = clean_tweet(twt)
                 f_out.write(json.dumps(cln_twt) + '\n')
