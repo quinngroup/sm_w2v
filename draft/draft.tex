@@ -45,8 +45,9 @@
 %
 % For tracking purposes - this is V2.0 - May 2012
 
-\documentclass{sig-alternate-05-2015}
 
+
+\documentclass{sig-alternate-05-2015}
 
 \begin{document}
 
@@ -78,7 +79,7 @@
 %\crdata{0-12345-67-8/90/01}  % Allows default copyright data (0-89791-88-6/97/05) to be over-ridden - IF NEED BE.
 % --- End of Author Metadata ---
 
-\title{ Mining HIV trends in Social Media Data}
+\title{ Mining HIV Trends in Social Media Data}
 %
 % You need the command \numberofauthors to handle the 'placement
 % and alignment' of the authors beneath the title.
@@ -184,61 +185,145 @@ Introduce and literature review of:
 
 \section{Results}
 
-High level, but more specific than intro, introduce the approach and methods used in this paper here.
+1.2 Million tweets related to 'hiv', 'aids', 'truvada', 'prophylaxis', 'imtesting', 'sexwork', 'gay', 'PrEP', were collected from Twitter's streaming API. The tweets were restricted to English language, and the collection dates spanned from the 47th week of 2015 to the 7th week of 2016. The tweets were lowercased, and cleaned of exotic characters.
 
-\subsection{Word and Document Similarity}
+Then a variety of analyses were run, each with their own additional preprocessing. These analyses sought to determine what things Twitter users were saying about HIV and PrEP, ultimately to determine how to coordinate public health efforts to promote PrEP adoption and adherence for at-risk individuals.
 
-\begin{table}
-\centering
-\caption{Cosine Similarity to 'prep'}
-\begin{tabular}{|l|c|} \hline
-Related Word & Cosine Similarity to 'prep'\\ \hline
-truvada & 0.836507 \hline
-benegative & 0.809185\\ \hline
-charliesheen & 0.805214\\ \hline
-hivtestweek & 0.797361\\ \hline
-sexwork & 0.774867\\ \hline
-gettested & 0.765772\\ \hline
-hiv & 0.765389\\ \hline
-icasa2015 & 0.749948\\ \hline
-doingit & 0.749230\\ \hline
-aids & 0.738572\\ \hline
-\hline\end{tabular}
-\end{table}
-
-\begin{table}
-\centering
-\caption{Cosine Similarity to 'truvada'}
-\begin{tabular}{|c|c|} \hline
-Related Word & Cosine Similarity to 'truvada'\\ \hline
-truvada & 0.836507 \hline
-benegative & 0.809185\\ \hline
-charliesheen & 0.805214\\ \hline
-hivtestweek & 0.797361\\ \hline
-sexwork & 0.774867\\ \hline
-gettested & 0.765772\\ \hline
-hiv & 0.765389\\ \hline
-icasa2015 & 0.749948\\ \hline
-doingit & 0.749230\\ \hline
-aids & 0.738572\\ \hline
-\hline\end{tabular}
-\end{table}
-
-\subsection{Time Domain}
-
+While we excluded non-English tweets, we found that the subset of tweets that had geolocation data available came from around the world. Tweets were concentrated on English speaking areas with high population (Figure 1).
 
 \begin{figure}
 \centering
-\includegraphics[height=1in, width=1in]{fly}
-\caption{Time domain plot.}
+\includegraphics[height=2.5in, width=3.5in]{map}
+\caption{Plot of geolocated tweets.}
 \end{figure}
 
+\subsection{Word and Document Similarity}
+
+The first analyses that we performed sought to identify certain keywords, and hashtags that users were users were mentioning in PrEP related contexts. Word2Vec and the refinement, Paragraph2Vec are unsupervised machine learning methods that have performed well at embedding natural language in a semantic vector space.
+
+We queried for the top 10 words that had the highest semantic similarity with the word 'truvada' (Table 1). We found many HIV related words, with the specific word 'prep' as the most similar.
+
+Next we preformed Paragraph clustering. In this application, a paragraph is equivalent to the text of a tweet. In this method, we identify the similarity between tweets, and tweet-level attributes such as hashtags. Querying for the Paragraph-Vectors with high similarity to '\#truvada' identifies '\#prep' as the top related hashtag (Table 2). Furthermore, we see hashtags related to prevention, and HIV in the results.
+
+The numeric entries in Table 2 correspond to tweet ID numbers. The top tweet associated with '\#truvada' has text: "\#girlsbelike if you see this 13 symptoms. do hiv test immediately. please read". This tweet is an HIV symptom related news update, which is representative of a large number of HIV related tweets on Twitter.
+
+The combined results from Word2Vec and Paragraph2Vec demonstrate that we can scan through the Twitter corpus and find words, hashtags, and tweets that are semantically related to our PrEP query terms. When HIV public health researchers identify an important keyword, or hashtag, they can quickly use this method to identify related keywords and specific relevant tweets.
+
+% table 1
+\begin{table}
+\centering
+\caption{Cosine Similarity to 'truvada'}
+\begin{tabular}{|l|c|} \hline
+Related Word & Cosine Similarity to 'truvada'\\ \hline
+prep & 0.836507\\ \hline
+charliesheen & 0.774535\\ \hline
+worldaidsday & 0.759242\\ \hline
+hivtestweek & 0.797361\\ \hline
+hiv & 0.744817\\ \hline
+hivaids & 0.730966\\ \hline
+aidsfreefuture & 0.721897\\ \hline
+icasa2015 & 0.713624\\ \hline
+benegative & 0.709129\\ \hline
+martinshkreli & 0.702565\\ \hline
+\hline\end{tabular}
+\end{table}
+
+% table 2
+\begin{table}
+\centering
+\caption{Cosine Similarity to '\#truvada'}
+\begin{tabular}{|l|c|} \hline
+Related Hashtag/Tweet & Cosine Similarity to '\#truvada'\\ \hline
+\#prep & 0.740855\\ \hline
+\#hiv & 0.646245\\ \hline
+685501883448963072 & 0.582529\\ \hline
+\#prevention & 0.0.578786\\ \hline
+\#potus & 0.561461\\ \hline
+688733331081527296 & 0.558048\\ \hline
+\#[Japanese "email friend"] & 0.557464\\ \hline
+\#[Japanese "sex friend"] & 0.556990\\ \hline
+\#bbbh & 0.547450\\ \hline
+\#cure & 	0.545497\\ \hline
+\hline\end{tabular}
+\end{table}
+
+
+\subsection{Time Domain}
+
+Next we sought to identify some temporal trends in PrEP related trends. We used Dynamic Topic Modelling to identify how certain topics change over time. We specified 10 topics and plotted representative words from two of the topics.
+
+In topic 3 we see that the keyword 'prep' remains relatively constant, while 'prevention' and 'truvada' decline over time. 'hivaids' increases and then decreases in magnitude over the course of the time series (Figure 2). These dynamics may indicate short term events in hivaids and PrEP-related conversation on twitter over the time period studied.
+
+We found that topic 5 captured several keywords related to World AIDS Day (Figure 3). We can see that all of these terms peak in the 47th week of 2015 and then decline into 2016. This correlates well with the actual date of World AIDS Day, December 1st. While we aren't specifically interested in World AIDS Day to inform our understanding of PrEP discussion, this observation validates our ability to identify temporal events using DTM.
+
+% figure 2
+\begin{figure}
+\centering
+\includegraphics[height=2.5in, width=3.5in]{fig1}
+\caption{DTM topic 3 word prevalence over time. Date is YYYY-WW.}
+\end{figure}
+
+% figure 3
+\begin{figure}
+\centering
+\includegraphics[height=2.5in, width=3.5in]{fig2}
+\caption{DTM topic 5 word prevalence over time. Date is YYYY-WW.}
+\end{figure}
 
 \subsection{User Timeline Analysis}
 
+Using a Paragraph2Vec analysis, we queried for the top 500 users related to '\#prep' who had at least 200 words in the combined set of tweets in their timeline, up to 3000 tweets. The timelines of these users were concatenated into 500 large timeline-documents. We then performed LDA on the timeline documents and identified words associated with 10 topics (Table 3). We can see some political, news and social media related keywords and colloquialisms in the top 5 words per topic.
 
-\subsubsection{Sentiment Classification}
+A heatmap of Topics vs Users shows the distribution of topic assignment weighting over the 500 users (Figure 4). We can see that many of the users are mentioning things assigned to topics 2 and 8. Topic 2 appears to be related to certain geographic regions such as 'Nigeria' and 'Syria' that may be especially suffering from HIV. Topic 8 contains words such as 'giveaway' and 'startups' indicating that it may be related to social and economic coordination to combat HIV.
 
+% table 3
+\begin{table*}
+\centering
+\caption{Topics Present in 500 HIV/PrEP related Timelines}
+\begin{tabular}{|l|c|c|c|c|c|} \hline
+Topic ID & Word1 & Word2 & Word3 & Word4 & Word5\\ \hline
+0 & 0.002*que & 0.001*por & 0.001*para & 0.001*milan & 0.001*een\\ \hline
+1 & 0.001*yg & 0.001*ini & 0.001*yang & 0.000*aku & 0.000*breakingbad\\ \hline
+2 & 0.001*lmao & 0.001*nigeria & 0.000*syria & 0.000*nigga & 0.000*kca\\ \hline
+3 & 0.000*ntv & 0.000*inspiringthinkn & 0.000*ktnkenya & 0.000*haber & 0.000*tuscany\\ \hline
+4 & 0.003*gurmeetramrahim & 0.001*ang & 0.001*ng & 0.001*ji & 0.001*ako\\ \hline
+5 & 0.001*remedies & 0.000*tw & 0.000*mx & 0.000*rid & 0.000*momlife\\ \hline
+6 & 0.000*flipboard & 0.000*mongolia & 0.000*gettingtozero & 0.000*blackburn & 0.000*occupy\\ \hline
+7 & 0.002*newsbreakslive & 0.002*drudgereport & 0.000*woof & 0.000*und & 0.000*der\\ \hline
+8 & 0.001*giveaway & 0.001*xx & 0.001*photography & 0.001*startups & 0.001*anc\\ \hline
+9 & 0.001*realdonaldtrump & 0.001*lgbt & 0.001*hiring & 0.001*uniteblue & 0.001*tedcruz\\ \hline
+\hline\end{tabular}
+\end{table*}
+
+\begin{figure}
+\centering
+\includegraphics[height=2.5in, width=3.5in]{user_time}
+\caption{Heatmap of Topics vs. Users.}
+\end{figure}
+
+\subsection{Sentiment Classification}
+
+Lastly we sought to create a classification scheme to classify the sentiment of tweets either positive or negative. This classifier would allow us to quickly identify positive and negative PrEP related tweets to guide public health efforts. We first performed Paragraph2Vec on both our PrEP related tweet corpus and on another tweet corpus that had binary sentiment labels, positive, or negative. Then we trained a simple logistic regression classifier on the paragraph-vectors. We found that our classifier had an accuracy of 70\% on a validation set.
+
+We then used this classifier to classify our PrEP related tweets into positive or negative labels. We reported the most positive, and most negative tweets, by log(probability), on our full dataset, and on tweets that specifically mention either 'prep' or 'truvada' (Table 4). It seems that overall the classifier seems to capture the sentiment relatively well, however it clearly fails to recognise the sarcasm present in the most positive overall tweet.
+
+The sentiment results aren't perfect, but they do help us identify positive individials in PrEP and HIV public health such as user @greg0wen. The sentiment tweets also let us uncover some of the prevailing stigmas and negative sentiments surrounding PrEP usage.
+
+\begin{table*}
+\centering
+\caption{Example Positive and Negative Sentiment Tweets}
+\begin{tabular}{|l|p{10cm}|} \hline
+Description & Tweet Body\\ \hline
+Most Positive Overall & \#apple hey, apple, with your new headphone hack you are in the gouger camp of shkreli who hiked the hiv drug. nice going.\\ \hline
+Most Positive PrEP & @greg0wen hi greg, I'm a hiv doctor and health writer doing a piece on hivprep could i poss contact you for some info? thanks, verity x\\ \hline
+Most Positive Truvada & great skypeing the john grant just now about bowie , icelandic sagas and truvada! you're right elliot\_rose about the song disappointing!\\ \hline
+
+Most Negative Overall & hiv sucks big time!! and I f\#n hate it!! We're almost there until this one stupid infection brought him back to where he started. sh\#t!!!\\ \hline
+Most Negative PrEP & rt @SamNyembe can we attribute hivaids high rate in kzn to many men having not removed their prepuce? \\ \hline
+Most Negative Truvada & this \#truvada convo has me catching feelings coz majority of men feel 0 responsibility for their reproductive \& sexual health\\ \hline
+
+\hline\end{tabular}
+\end{table*}
 
 
 \section{Conclusions}
