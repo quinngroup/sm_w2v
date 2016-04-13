@@ -7,7 +7,7 @@ class MakeIter(object):
     def __iter__(self):
         return self.generator_func(**self.kwargs)
 
-def clean_text(text):
+def clean_text(text, lower):
     clean = re.sub(r'http.*$', '', text)
     clean = re.sub(r'[^a-zA-Z,\.!?\'#0-9\s\-_]', '', clean)
 
@@ -18,16 +18,17 @@ def clean_text(text):
     clean = clean.replace('?', ' ? ')
     clean = clean.replace('!', ' ! ')
 
-    clean = clean.lower()
+    if lower:
+        clean = clean.lower()
     word_list = clean.split()
     words = " ".join(word_list)
     return  words
 
-def clean_tweet(twt):
+def clean_tweet(twt, lower):
     cln_twt = dict()
 
     cln_twt['id'] = twt['id']
-    cln_twt['text'] = clean_text(twt['text'])
+    cln_twt['text'] = clean_text(twt['text'], lower)
     cln_twt['user_id_str'] = twt['user']['id_str']
     cln_twt['tags'] = [twt['user']['name'] + '-*-' + cln_twt['user_id_str']] + \
         ['#' + hashtag['text'].lower() for hashtag in twt['entities']['hashtags']]
@@ -38,15 +39,24 @@ def clean_tweet(twt):
     return cln_twt
 
 def relevant_twt(twt):
-    key_words_lower = ['hiv', 'aids', 'truvada', 'prophylaxis',
-                       'imtesting', 'sexwork', 'gay']
-    key_words_w_case = ['PrEP']
+    key_words_lower = ['truvada', 'prophylaxis', 'imtesting']
+    key_words_w_case = ['PrEP', 'HIV', 'AIDS']
+    utc_offset = twt['user']['utc_offset']
 
+    if not utc_offset:
+        return False
+
+    right_timezone = (utc_offset >= -28800) and (utc_offset <= -18000)
+
+    if not right_timezone:
+        return False
+
+    text = clean_tweet(twt, False)['text'].split()
     for word in key_words_w_case:
-        if word in twt['text']:
+        if word in text:
             return True
 
-    lcase_txt = twt['text'].lower()
+    lcase_txt = [w.lower() for w in text]
 
     for word in key_words_lower:
         if word in lcase_txt:

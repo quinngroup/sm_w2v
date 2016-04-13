@@ -79,13 +79,14 @@ def run_clean():
     with open('data/r_twitter.json') as f_in, open('data/c_twitter.json', 'w') as f_out:
         for i, l in enumerate(f_in):
             try:
-                twt = json.loads(l)
+                twt = json.loads(l.strip('\0'))
             except:
-                break
+                continue
 
+            #import pdb;pdb.set_trace()
             if relevant_twt(twt) and (twt['id'] not in ids):
                 ids.add(twt['id'])
-                cln_twt = clean_tweet(twt)
+                cln_twt = clean_tweet(twt, False)
                 f_out.write(json.dumps(cln_twt) + '\n')
     print("done cleaning.")
 
