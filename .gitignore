@@ -16,3 +16,8 @@ doc/*
 models/*
 *glds00g.asc
 *.pdf
+*.eps
+*.ps
+*.gz
+*.log
+*.aux
