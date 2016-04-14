@@ -172,6 +172,7 @@ Here is the abstract.
 \keywords{ Social Media, Topic Modelling, Document Embedding}
 
 \section{Introduction}
+Example citation (needed right now to compile):\cite{Lamport:LaTeX}
 
 Introduce and literature review of:
 1) PrEP, HIV, Twitter
@@ -193,11 +194,13 @@ Introduce and literature review of:
 
 
 
-We sought to determine trends in HIV and PrEP discourse on twitter, to inform and coordinate public health efforts to promote PrEP adoption and adherence for at-risk individuals. We collected 624,569 tweets related to 'HIV', 'AIDS', 'truvada', 'prophylaxis', 'imtesting', 'PrEP' from Twitter's streaming API. The tweets were restricted to English language, and the collection dates spanned from the 47th week of 2015 to the 14th week of 2016. The tweets were and cleaned of exotic characters.
+We sought to determine trends in HIV and PrEP discourse on twitter, to inform and coordinate public health efforts aiming to promote PrEP adoption and adherence for at-risk individuals. We collected 624,569 tweets containing at least one of the following words 'HIV', 'AIDS', 'truvada', 'prophylaxis', 'imtesting', 'PrEP' from Twitter's streaming API. The tweets were restricted to English language, and the collection dates spanned from the 47th week of 2015 to the 14th week of 2016. The tweets were and cleaned of exotic characters.
 
-% Prior to topic modelling, tweets were cleaned of high and low frequency words, and transformed by Term Frequency Inverse Document Frequency (TFIDF) processing.
+
 
 We excluded non-English tweets, and also tweets that did not originate in Contiguous United States time zones. A subset of the tweets we collected had geolocation data available. We found that tweets were largely concentrated on US and Canadian metro areas (Figure 1).
+
+% Prior to topic modelling, tweets were cleaned of high and low frequency words, and transformed by Term Frequency Inverse Document Frequency (TFIDF) processing.
 
 \begin{figure}
 \centering
@@ -207,13 +210,9 @@ We excluded non-English tweets, and also tweets that did not originate in Contig
 
 \subsection{Word and Document Similarity}
 
-% show text of relevent tweets from d2v
+The first analyses that we performed sought to identify certain keywords, hashtags, tweets and users, that were discussing HIV and PrEP related contexts. Word2Vec and the related method, Paragraph2Vec are unsupervised machine learning methods that have performed well at embedding natural language in a semantic vector space. In our analysis, Word2Vec allows us to determine semantically similar words to a query word, while Paragraph2Vec allows us to determine similar tweets, users and hashtags to a query hashtag.
 
-% talk a bit about pre processing
-
-The first analyses that we performed sought to identify certain keywords, hashtags, tweets and users, that were discussing HIV and PrEP related contexts. Word2Vec and the related method, Paragraph2Vec are unsupervised machine learning methods that have performed well at embedding natural language in a semantic vector space. In our analysis, Word2Vec allows us to determine semantically similar words, while Paragraph2Vec allows us to determine similar tweets, users and hashtags.
-
-
+% want to do a tSNE plot, but only on things that are relatively dissimilar. For example do HIV, truvada, STDs, testing related, awareness related, ... and throw away or merge labels 
 
 % table 1 - w2v PrEP
 \begin{table}
@@ -262,22 +261,28 @@ user-711275699529764864 & 0.629254\\ \hline
 
 Next we sought to identify some temporal trends in PrEP related trends. We used Dynamic Topic Modelling to identify how certain topics change over time. We specified 10 topics and plotted representative words from two of the topics.
 
+% might want to explain at a high level how DTM works here
+
 In topic 3 we see that the keyword 'prep' remains relatively constant, while 'prevention' and 'truvada' decline over time. 'hivaids' increases and then decreases in magnitude over the course of the time series (Figure 2). These dynamics may indicate short term events in hivaids and PrEP-related conversation on twitter over the time period studied.
 
-We found that topic 5 captured several keywords related to World AIDS Day (Figure 3). We can see that all of these terms peak in the 47th week of 2015 and then decline into 2016. This correlates well with the actual date of World AIDS Day, December 1st. While we aren't specifically interested in World AIDS Day to inform our understanding of PrEP discussion, this observation validates our ability to identify temporal events using DTM.
+We found that topic 4 captured several keywords related to World AIDS Day (Figure 3). We can see that all of these terms peak in the 47th week of 2015 and then decline into 2016. This correlates well with the actual date of World AIDS Day, December 1st. Furthermore,while December 1st is World AIDS day, the whole month of Decemeber is AIDS Awarness month. We are clearly seeing the word 'awarness' peak later and last longer that the word 'WorldAIDSDay' implying that it is correlated to the whole month of December. While we aren't specifically interested in World AIDS Day, or AIDS awareness month, to inform our understanding of PrEP discussion, this observation validates our ability to identify temporal events using DTM. 
+
+% breifly mention what was in the other topics (lots of AIDS related news announcements)
+
+
 
 % figure 2
 \begin{figure}
 \centering
 \includegraphics[height=2.5in, width=3.5in]{DTMfig1}
-\caption{DTM topic 3 word prevalence over time. Date is YYYY-WW.}
+\caption{DTM topic 5, word prevalence over time. Date is YYYY-WW.}
 \end{figure}
 
 % figure 3
 \begin{figure}
 \centering
 \includegraphics[height=2.5in, width=3.5in]{DTMfig2}
-\caption{DTM topic 5 word prevalence over time. Date is YYYY-WW.}
+\caption{DTM topic 5, word prevalence over time. Date is YYYY-WW.}
 \end{figure}
 
 \subsection{User Timeline Analysis}
@@ -294,22 +299,20 @@ We found that topic 5 captured several keywords related to World AIDS Day (Figur
 % report accuracy
 % (potentially) report topic modeling on top postive and negative PrEP tweets
 
-Lastly we sought to create a classification scheme to classify the sentiment of tweets either positive or negative. This classifier would allow us to quickly identify positive and negative PrEP related tweets to guide public health efforts. We first performed Paragraph2Vec on both our PrEP related tweet corpus and on another tweet corpus that had binary sentiment labels, positive, or negative. Then we trained a simple logistic regression classifier on the paragraph-vectors. We found that our classifier had an accuracy of 70\% on a validation set.
+Lastly we sought to create a classification scheme to classify the sentiment of tweets either positive or negative. This classifier would allow us to quickly identify positive and negative PrEP related tweets to guide public health efforts. We first performed Paragraph2Vec on both our PrEP related tweet corpus and on another tweet corpus that had binary sentiment labels, positive, or negative. Then we trained a simple logistic regression classifier on the paragraph-vectors. We found that our classifier had an accuracy of 69\% on a validation set.
 
-We then used this classifier to classify our PrEP related tweets into positive or negative labels. We reported the most positive, and most negative tweets, by log(probability), on our full dataset, and on tweets that specifically mention either 'prep' or 'truvada' (Table 4). It seems that overall the classifier seems to capture the sentiment relatively well, however it clearly fails to recognise the sarcasm present in the most positive overall tweet.
+We then used this classifier to classify our PrEP related tweets into positive or negative labels. We reported the most positive, and most negative tweets, by log(probability), on our full dataset, and on tweets that specifically mention either 'prep' or 'truvada' (Table 4).
 
-The sentiment results aren't perfect, but they do help us identify positive individuals in PrEP and HIV public health such as user @greg0wen. The sentiment tweets also let us uncover some of the prevailing stigmas and negative sentiments surrounding PrEP usage.
+% do a top positive tweets table (also with tweet ID and log prob of classification)
 
-% do a top positive tweets table
-
-% do a top negative tweets table
+% do a top negative tweets table (also with tweet ID and log prob of classification)
 
 
 \section{Conclusions}
 
 Conclusions go here.
 
-Example citation (needed right now to compile):\cite{Lamport:LaTeX}
+
 
 %\end{document}  % This is where a 'short' article might terminate
 
