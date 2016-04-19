@@ -141,7 +141,7 @@ Shannon Quinn\titlenote{Corresponding author.}\\
 \maketitle
 \begin{abstract}
 
-Pre-Exposure Prophylaxis (PrEP) is a recently developed therapy for the prevention of Human Immunodeficiency Virus (HIV). The treatment is available as a pill named Truvada and is taken once a day for as much as 99\% protection from infection when exposed to HIV. While medically effective, PrEP suffers from high drug costs, HIV-related social stigma, and under-informed health providers and patients. This paper contributes a data mining and machine learning strategy that monitors Twitter social media data. Our results show that we can identify trends over time, and positive and negative PrEP related tweets. These results can be used by public health professionals to inform and protect at risk individuals from HIV. 
+Pre-Exposure Prophylaxis (PrEP) is a recently developed therapy for the prevention of Human Immunodeficiency Virus (HIV). The treatment is available as a pill named Truvada and is taken once a day for as much as 99\% protection from infection when exposed to HIV. While medically effective, PrEP suffers from high drug costs, HIV-related social stigma, and under-informed health providers and patients. This paper contributes a data mining and machine learning strategy that monitors Twitter social media data. Our results show that we can identify PrEP and HIV discussion trends over time, and positive and negative PrEP related tweets. These results can be used by public health professionals to inform and protect at-risk individuals from HIV. 
 
 %These methods may also be useful to identify and preempt HIV outbreaks before they reach epidemic levels.
 
@@ -208,9 +208,9 @@ Introduce and literature review of:
 
 We sought to determine trends in HIV and PrEP discourse on twitter, to inform and coordinate public health efforts aiming to promote PrEP adoption and adherence for at-risk individuals. We collected 624,569 tweets containing at least one of the following words 'HIV', 'AIDS', 'truvada', 'prophylaxis', 'imtesting', 'PrEP' from Twitter's streaming API. The tweets were restricted to English language, and the collection dates spanned from the 47th week of 2015 to the 14th week of 2016. The tweets were and cleaned of exotic characters.
 
-We excluded non-English tweets, and also tweets that did not originate in contiguous United States time zones. A subset of the tweets we collected had geolocation data available. We found that tweets were largely concentrated on US and Canadian metro areas (Figure 1).
+We excluded tweets that did not originate in contiguous United States time zones. A subset of the tweets we collected had geolocation data available. We found that tweets were largely concentrated on US and Canadian metro areas (Figure 1).
 
-% Prior to topic modelling, tweets were cleaned of high and low frequency words, and transformed by Term Frequency Inverse Document Frequency (TFIDF) processing.
+
 
 \begin{figure}
 \centering
@@ -220,59 +220,86 @@ We excluded non-English tweets, and also tweets that did not originate in contig
 
 \subsection{Word and Document Similarity}
 
-% TODO work this section Tuesday
-
-The first analyses that we performed sought to identify certain keywords, hashtags, tweets and users, that were discussing HIV and PrEP related contexts. Word2Vec and the related method, Paragraph2Vec are unsupervised machine learning methods that have performed well at embedding natural language in a semantic vector space. In our analysis, Word2Vec allows us to determine semantically similar words to a query word, while Paragraph2Vec allows us to determine similar tweets, users and hashtags to a query hashtag.
-
-% want to do a tSNE plot, but only on things that are relatively dissimilar. For example do HIV, truvada, STDs, testing related, awareness related, ... and throw away or merge labels 
+The first analysis that we performed sought to identify certain keywords, hashtags, tweets and users, that were discussed in HIV and PrEP related contexts. Word2Vec and the related method, Paragraph2Vec are unsupervised machine learning methods that have performed well at embedding natural language in a semantic vector space. In our analysis, Word2Vec allows us to determine semantically similar words to a query word, while Paragraph2Vec allows us to determine similar tweets, users and hashtags to a query hashtag.
 
 % table 1 - w2v PrEP
 \begin{table}
 \centering
-\caption{Cosine Similarity to 'PrEP'}
+\caption{Cosine Similarity to word-vector 'PrEP'}
 \begin{tabular}{|l|c|} \hline
 Related Word & Cosine Similarity to 'PrEP'\\ \hline
+truvada & 0.796666\\ \hline
+DoingIt & 0.738141\\ \hline
+WorldAIDSDay & 0.720910\\ \hline
+NancyReagan & 0.717667\\ \hline
+NBHAAD & 0.705061\\ \hline
+ART & 0.704300\\ \hline
+HLM2016AIDS & 0.698698\\ \hline
+ICASA2015 & 0.693117\\ \hline
+HIV & 0.692860\\ \hline
+OneConversation & 0.688427\\ \hline
 \hline\end{tabular}
 \end{table}
 
 % table 2 - d2v PrEP
 \begin{table}
 \centering
-\caption{Cosine Similarity to '\#truvada'}
+\caption{Cosine Similarity to doc-vector '\#PrEP'}
 \begin{tabular}{|l|c|} \hline
-Related Hashtag/Tweet & Cosine Similarity to '\#truvada'\\ \hline
+Related Hashtag/Tweet & Cosine Similarity to '\#PrEP'\\ \hline
+\#lgbtmedia16 & 0.739128\\ \hline
+\#hiv & 	0.727602 \\ \hline
+\#whereisprep & 0.707165 \\ \hline
+\#truvada & 0.696113 \\ \hline
+\#hivprevention & 0.636068 \\ \hline
+tweet-702179860983189504 & 0.630055\\ \hline
+user-711275699529764864 & 0.629254\\ \hline
+tweet-708519265540907010 & 0.628778 \\ \hline
+tweet-712032637024653313 & 0.628646 \\ \hline
+\#harrogatehour & 0.628547 \\ \hline
 \hline\end{tabular}
 \end{table}
 
-% show PCA for each table above (remember to mention percent varience)
+% example tweets that show up related to Prep that are informative, and misinformative:
+% tweet-702179860983189504 "#StoneColdVideoTODAY if You see this 13 symptoms. Do HIV Test Immediately. Must Read"
+% tweet-708519265540907010 "Checkout why PrEP is hurting the cause amp # JoinTheConversation # LGBTQIA"
+
+% figure 3
+\begin{figure*}
+\centering
+\includegraphics[height=4in, width=6in]{tSNE_word}
+\caption{tSNE plot of relevant word-vectors}
+\end{figure*}
 
 \subsection{Time Domain}
 
-Next we sought to identify some temporal trends in PrEP related trends. We used Dynamic Topic Modelling (DTM) to identify how certain topics change over time. In DTM, documents are grouped in several corpuses that represent different points in time. Latent Dirichlet Analysis (LDA) is then performed on each corpus, to extract a topic distribution. The posterior distribution from time $t_n$ is used as the prior for time $t_{n+1}$. We specified 10 topics and used each week's worth of tweets over a 30 week period as our time points.
+Next we sought to identify some temporal trends in PrEP related trends. We used Dynamic Topic Modelling (DTM) to identify how certain topics change over time. In DTM, documents are grouped in several corpuses that represent successive points in time. Latent Dirichlet Analysis (LDA) is then performed on each corpus, to extract a topic distribution. The posterior topic distribution from time $t_n$ is used as the prior for time $t_{n+1}$. This lets the model determine a topic model for each time point that is dependent both on the set of tweets from that time point, and on the time point's document distribution. We specified 10 topics and used each week's worth of tweets, over a 30 week period from the 47th week of 2015 to the 14th week of 2016, as our time points.
 
-% might want to explain at a high level how DTM works here
+We identified two topics that showed relevant trends. In topic 5 we see that the keyword 'PrEP' increases over time, while 'prevention', 'drug' and 'risk' remain constant (Figure 3). The term 'pill', also from topic 5, declines overtime. These dynamics may indicate that PrEP discussion is becoming more prevalent. Other HIV prevention related words such as 'pill', 'prevention' and 'drug' which serve as a form of negative controls. They are related to PrEP semantically, and are thus in the same topic. Yet the fact that they are not increasing, shows us that the increase in PrEP discussion is PrEP-specific.
 
-We identified two topics that showed relevant trends. In topic 5 we see that the keyword 'prep' remains relatively constant, while 'prevention' and 'truvada' decline over time. 'hivaids' increases and then decreases in magnitude over the course of the time series (Figure 3). These dynamics may indicate short term events in hivaids and PrEP-related conversation on twitter over the time period studied.
+However, it is hard to tell from these data though, whether the increased level of PrEP discussion is leading to increased levels of informed patients, medical providers, and adherence. It is possible that stigma, and misinformation is leading to greater levels of PrEP discussion on twitter. We will get more specific, granular understanding of the PrEP discourse in our sentiment analysis section below.
 
 % figure 3
 \begin{figure}
 \centering
 \includegraphics[height=2.5in, width=3.5in]{DTMfig1}
-\caption{DTM topic 5, word prevalence over time. Date is YYYY-WW.}
+\caption{DTM topic 5 (PrEP related topic) word prevalence over time. Date is YYYY-WW.}
 \end{figure}
 
-We found that topic 4 captured several keywords related to World AIDS Day (Figure 4). We can see that all of these terms peak in the 47th week of 2015 and then decline into 2016. This correlates well with the actual date of World AIDS Day, December 1st. Furthermore,while December 1st is World AIDS day, the whole month of December is AIDS Awareness month. We are clearly seeing the word 'awareness' peak later and last longer that the word 'WorldAIDSDay' implying that it is correlated to the whole month of December. While we aren't specifically interested in World AIDS Day, or AIDS awareness month, to inform our understanding of PrEP discussion, this observation validates our ability to identify temporal events using DTM. 
+We found at least one other DTM topic that showed interesting behaviour. We found that topic 4 captured several keywords related to World AIDS Day (Figure 4). We can see that 'WorldAIDSDay', and 'can' peak in the 47th week of 2015 and then decline into 2016. This correlates well with the actual date of World AIDS Day, December 1st. Furthermore, while December 1st is World AIDS day, the whole month of December is AIDS Awareness Month. We can clearly see the words 'raise' and 'awareness' peak later and last longer that the word 'WorldAIDSDay' implying that it is correlated to the whole month of December. While our PrEP investigation isn't specifically interested in World AIDS Day, or AIDS awareness month, this observation validates our ability to accurately identify temporal events using DTM. 
 
 % figure 4
 \begin{figure}
 \centering
 \includegraphics[height=2.5in, width=3.5in]{DTMfig2}
-\caption{DTM topic 5, word prevalence over time. Date is YYYY-WW.}
+\caption{DTM topic 4 (WorldAIDSDay related topic) word prevalence over time. Date is YYYY-WW.}
 \end{figure}
 
-These results demonstrate our ability to extract relevant HIV and PrEP related information from twitter that accurately captures time-dependant fluctuations. Public health professionals should be able to monitor these temporal trends to determine the relative interest in PrEP related social media discourse. This could lead to a system for early detection of HIV outbreak detection, or other serious developments.
+Together, the DTM results demonstrate our ability to extract relevant HIV and PrEP related information from twitter that accurately captures time-dependant fluctuations. Public health professionals should be able to monitor these temporal trends to determine the relative interest in PrEP, and other HIV related keywords as they are discussed over time. This method could even lead to a system for early detection of HIV outbreaks, or other serious developments.
 
 \subsection{User Timeline Analysis}
+
+% Prior to topic modelling, tweets were cleaned of high and low frequency words, and transformed by Term Frequency Inverse Document Frequency (TFIDF) processing.
 
 % TODO work this section (re download and re-run) Tuesday
 
@@ -281,31 +308,32 @@ We wanted to identify what Twitter users that mentioned PrEP were discussing in 
 When we examine a clustermap of users vs. topics, we see that the majority of these users are discussing topics 5, 1, and 4 (Figure 5). When we look up the top words in the corresponding topic distributions, we see that topics 1 and 4 seem to be related to republican party politics.
 
 % figure 5
-\begin{figure}
+\begin{figure*}
 \centering
 \includegraphics[height=2.5in, width=3.5in]{user_timeline_clustermap}
 \caption{Clustermap of users vs. topics for the top 300 users related to PrEP.}
-\end{figure}
+\end{figure*}
 
 % table 3
 \begin{table*}
 \centering
-\caption{Topic modeling on PrEP-related users\' timelines.}
+\caption{Topic modeling on PrEP-related users' timelines.}
 \begin{tabular}{|l|c|c|c|c|c|c|c|c|c|c|} \hline
-Topic Number & Word 0 & Word 1 & Word 2 & Word 3 & Word 4 & Word 5 & Word 6 & Word 7 & Word 8 & Word 9\\ \hline
-0 & hivaids & condoms & bitcoin & stigma & cdcstd & kanyewest & nyhaad & entrepreneur & realestate & blacklivesmatter\\ \hline
-1 & ang & ng & tcot & ako & sa & ko & pjnet & realdonaldtrump & gopdebate & cruzcrew\\ \hline
-2 & fertility & infertility & meme & mxico & rp & deactivate & rail & roc & offensive & feedly\\ \hline
-3 & colombia & pozlivingbc & fe & repostapp & sprite & bccfe & thewalkingdead & npinchat & interior & wellness\\ \hline
-4 & businessinsider & stacks & noh & teaparty & sk & holi & alzheimers & caregiver & asa & guru\\ \hline
-5 & armenia & wordpress & georgia & topping & lgbtqia & yah & faction & checkout & narendramodi & examination\\ \hline
-6 & knitting & lista & naral & gust & worldbank & bigdata & haiku & vdeo & mhealth & hah\\ \hline
-7 & nigga & niggas & bernie & lmao & nhsengland & bitches & bae & uniteblue & il & gop\\ \hline
-8 & socialmedia & seo & socialmediamarketing & der & und & entrepreneur & ist & nowplaying & foxbusiness & enews\\ \hline
-9 & collage & mileycyrus & undetectable & ddlovato & casa & cnet & qotd & vacations & nashville & heros \\ \hline
-
+Topic Number & Word 0 & Word 1 & Word 2 & Word 3 & Word 4 & Word 5\\ \hline
+0 & wordpress & dentists & rb & aquarius & faction & reconnect\\ \hline
+1 & empirefox & crooks & csr & payroll & ch & allin\\ \hline
+2 & vdeo & pra & gust & lgbtqia & rail & undetectable\\ \hline
+3 & hivaids & cdcstd & stigma & blacklivesmatter & realestate & getcovered\\ \hline
+4 & nigga & niggas & realdonaldtrump & lmao & cruz & gop\\ \hline
+5 & fertility & infertility & armenia & collage & nig & deactivate\\ \hline
+6 & packaging & buenas & amigo & bu & birthcontrol & reservations \\ \hline
+7 & mga & ka & socialmedia & lang & entrepreneur & naman\\ \hline
+8 & infosec & bigdata & multimedia & stl & fx & malware\\ \hline
+9 & nhsengland & sosa & tw & knitting & worldbank & thtorguk\\ \hline
 \hline\end{tabular}
 \end{table*}
+
+
 
 Together these results suggest that PrEP users are involved in political discussions, and are internationally focused.
 
@@ -322,9 +350,50 @@ Lastly we trained a classifier to classify the sentiment of HIV and PrEP related
 We then used this classifier to classify our PrEP related tweets into positive or negative labels. We reported the most positive, and most negative tweets, by log(probability), on our full dataset, and on tweets that specifically mention either 'prep' or 'truvada' (Table 4).
 
 % do a top positive tweets table (also with tweet ID and log prob of classification)
+% table 4
+\begin{table*}
+\centering
+\caption{Positive Sentiment Tweets.}
+\begin{tabular}{|p{2cm}|p{12cm}|} \hline
+Category & Text\\ \hline
+General & "RT TOPublicHealth The Works provides testing for HIV anonymous \& rapid test available . Call 416-392-0520 for more info"\\ \hline
+General & "RT FCAA ejaforg announced 5.4 million in grants to support orgs addressing \#HIV in new \& innovative ways!"\\ \hline
+General & "RT HillaryClinton A note on the fight against HIV and AIDS and the people who really started the conversation."\\ \hline
+
+PrEP specific & "He won't use condoms because intimacy means more than his health. but he's discovered PrEP. thank goodness."\\ \hline
+PrEP specific & "PrEP Queensland Aids Council, \#HIV Foundation, Queensland."\\ \hline
+PrEP specific & "RT JDatTheBody At the core of our programs is belief that young ppl can succeed in take PrEP for HIV prevention. \#NHPC2015"\\ \hline
+
+Truvada specific & "RT CDC\_HIVAIDS Expanding testing, treatment, \& \#PrEP could prevent up to 185k new \#HIV infections"\\ \hline
+Truvada specific & "Another reason 4 \#Ireland \& \#UK 2 immediately approve \#truvada \& \#PrEP 2 stop \#HIV infections . arleavitt AodhanORiordain MerchantsQuayIR"\\ \hline
+Truvada specific & "RT EvanJPeterson For \#worldAIDSday my early \#PrEP arcticle in strangerslog, art by leviathanleague \#hiv \#truvada \#truvadawhore"\\ \hline
+
+\hline\end{tabular}
+\end{table*}
 
 % do a top negative tweets table (also with tweet ID and log prob of classification)
+% table 5
+\begin{table*}
+\centering
+\caption{Negative Sentiment Tweets.}
+\begin{tabular}{|p{2cm}|p{12cm}|} \hline
+Category & Text\\ \hline
+General & "Also, how fucking vile of Hillary to say. Reagan did fucking NOTHING during the AIDS epidemic until it was too late. What a stupid old hag."\\ \hline
+General & "I wonder why he beat her ass when she was tryna leave like she wasn't gone be running back when she found out she had HIV \& nobody want her"\\ \hline
+General & "Aaannd. Hillary Clinton breathes a sigh of relief that Twitter has left its outrage of her AIDS comments behind to tend to Drumpf debacle."\\ \hline
 
+PrEP specific & "RT gaston\_croupier \#Truvada patent's not expired yet but it is sold online as a generic drug? There's something rotten in internet \#PrEP h"\\ \hline
+PrEP specific & "Equality\_MI Syph \& Hep C have gone up 550 in Gay Men bc many feel tht bc they're on PrEP, they don't need condoms. HIV isn't the only STI."\\ \hline
+PrEP specific & "Xaviom8 in interviews he says he was adherent. strain was highly resistant, and Truvada wouldn't have blocked it anyways. PrEP didn't fail."\\ \hline
+
+Truvada specific & "not surprised at all that someone got HIV on truvada. people get pregnant on birth control. tomato-condoms are still important-tomahto"\\ \hline
+Truvada specific & "Now reading that truvada does not protect against certain strains of the HIV virus. Yet people want to take that risk.."\\ \hline
+Truvada specific & "I think I have conjunctivitis unless truvada cured it overnight cuz im not feeling as horrible today as last night"\\ \hline
+
+\hline\end{tabular}
+\end{table*}
+
+% there is viable information in the LDA topic modeling on positive and negative tweets
 
 \section{Conclusions}
 
