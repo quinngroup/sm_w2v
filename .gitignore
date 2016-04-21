@@ -15,7 +15,7 @@ tools/*
 doc/*
 models/*
 *glds00g.asc
-*.pdf
+notebooks/*.pdf
 *.eps
 *.ps
 *.gz
