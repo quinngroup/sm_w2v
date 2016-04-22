@@ -9,6 +9,7 @@ temp/*
 tokens.py
 __pycache__/*
 venv/*
+venv27/*
 *.pyc
 *.ipynb_checkpoints
 tools/*
@@ -21,3 +22,6 @@ notebooks/*.pdf
 *.gz
 *.log
 *.aux
+
+draft/*to.pdf
+draft/sig*.pdf
