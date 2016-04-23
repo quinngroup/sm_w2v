@@ -1,8 +1,21 @@
 \begin{thebibliography}{1}
 
-\bibitem{Lamport:LaTeX}
-L.~Lamport.
-\newblock {\em LaTeX User's Guide and Document Reference Manual}.
-\newblock Addison-Wesley Publishing Company, Reading, Massachusetts, 1986.
+\bibitem{centers2014hiv}
+C.~for Disease~Control, P.~(CDC, et~al.
+\newblock Hiv risk, prevention, and testing behaviors. national hiv behavioral
+  surveillance system: men who have sex with men, 20 us cities, 2011. in: Hiv
+  surveillance special report 8.
+\newblock {\em HIV surveillance special report}, 8, 2014.
+
+\bibitem{low2014graphlab}
+Y.~Low, J.~E. Gonzalez, A.~Kyrola, D.~Bickson, C.~E. Guestrin, and
+  J.~Hellerstein.
+\newblock Graphlab: A new framework for parallel machine learning.
+\newblock {\em arXiv preprint arXiv:1408.2041}, 2014.
+
+\bibitem{van2008visualizing}
+L.~Van~der Maaten and G.~Hinton.
+\newblock Visualizing data using t-sne.
+\newblock {\em Journal of Machine Learning Research}, 9(2579-2605):85, 2008.
 
 \end{thebibliography}

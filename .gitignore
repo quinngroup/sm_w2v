@@ -22,6 +22,9 @@ notebooks/*.pdf
 *.gz
 *.log
 *.aux
+*.png
 
 draft/*to.pdf
 draft/sig*.pdf
+draft/tSNE_word.pdf
+
