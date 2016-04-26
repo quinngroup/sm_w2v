@@ -1,4 +1,29 @@
-\begin{thebibliography}{1}
+\begin{thebibliography}{10}
+
+\bibitem{aramaki2011twitter}
+E.~Aramaki, S.~Maskawa, and M.~Morita.
+\newblock Twitter catches the flu: detecting influenza epidemics using twitter.
+\newblock In {\em Proceedings of the conference on empirical methods in natural
+  language processing}, pages 1568--1576. Association for Computational
+  Linguistics, 2011.
+
+\bibitem{blei2006dynamic}
+D.~M. Blei and J.~D. Lafferty.
+\newblock Dynamic topic models.
+\newblock In {\em Proceedings of the 23rd international conference on Machine
+  learning}, pages 113--120. ACM, 2006.
+
+\bibitem{blei2003latent}
+D.~M. Blei, A.~Y. Ng, and M.~I. Jordan.
+\newblock Latent dirichlet allocation.
+\newblock {\em the Journal of machine Learning research}, 3:993--1022, 2003.
+
+\bibitem{de2013predicting}
+M.~De~Choudhury, S.~Counts, and E.~Horvitz.
+\newblock Predicting postpartum changes in emotion and behavior via social
+  media.
+\newblock In {\em Proceedings of the SIGCHI Conference on Human Factors in
+  Computing Systems}, pages 3267--3276. ACM, 2013.
 
 \bibitem{centers2014hiv}
 C.~for Disease~Control, P.~(CDC, et~al.
@@ -7,15 +32,83 @@ C.~for Disease~Control, P.~(CDC, et~al.
   surveillance special report 8.
 \newblock {\em HIV surveillance special report}, 8, 2014.
 
+\bibitem{grant2010preexposure}
+R.~M. Grant, J.~R. Lama, P.~L. Anderson, V.~McMahan, A.~Y. Liu, L.~Vargas,
+  P.~Goicochea, M.~Casap{\'\i}a, J.~V. Guanira-Carranza, M.~E. Ramirez-Cardich,
+  et~al.
+\newblock Preexposure chemoprophylaxis for hiv prevention in men who have sex
+  with men.
+\newblock {\em New England Journal of Medicine}, 363(27):2587--2599, 2010.
+
+\bibitem{le2014distributed}
+Q.~V. Le and T.~Mikolov.
+\newblock Distributed representations of sentences and documents.
+\newblock {\em arXiv preprint arXiv:1405.4053}, 2014.
+
+\bibitem{liu2014early}
+A.~Liu, S.~Cohen, S.~Follansbee, D.~Cohan, S.~Weber, D.~Sachdev, and
+  S.~Buchbinder.
+\newblock Early experiences implementing pre-exposure prophylaxis (prep) for
+  hiv prevention in san francisco.
+\newblock {\em PLoS Med}, 11(3):e1001613, 2014.
+
 \bibitem{low2014graphlab}
 Y.~Low, J.~E. Gonzalez, A.~Kyrola, D.~Bickson, C.~E. Guestrin, and
   J.~Hellerstein.
 \newblock Graphlab: A new framework for parallel machine learning.
 \newblock {\em arXiv preprint arXiv:1408.2041}, 2014.
 
+\bibitem{mehta2011awareness}
+S.~A. Mehta, R.~Silvera, K.~Bernstein, R.~S. Holzman, J.~A. Aberg, and D.~C.
+  Daskalakis.
+\newblock Awareness of post-exposure hiv prophylaxis in high-risk men who have
+  sex with men in new york city.
+\newblock {\em Sexually transmitted infections}, pages sti--2010, 2011.
+
+\bibitem{mikolov2013efficient}
+T.~Mikolov, K.~Chen, G.~Corrado, and J.~Dean.
+\newblock Efficient estimation of word representations in vector space.
+\newblock {\em arXiv preprint arXiv:1301.3781}, 2013.
+
+\bibitem{myslin2013using}
+M.~Mysl{\'\i}n, S.-H. Zhu, W.~Chapman, and M.~Conway.
+\newblock Using twitter to examine smoking behavior and perceptions of emerging
+  tobacco products.
+\newblock {\em Journal of medical Internet research}, 15(8):e174, 2013.
+
+\bibitem{thigpen2012antiretroviral}
+M.~C. Thigpen, P.~M. Kebaabetswe, L.~A. Paxton, D.~K. Smith, C.~E. Rose, T.~M.
+  Segolodi, F.~L. Henderson, S.~R. Pathak, F.~A. Soud, K.~L. Chillag, et~al.
+\newblock Antiretroviral preexposure prophylaxis for heterosexual hiv
+  transmission in botswana.
+\newblock {\em New England Journal of Medicine}, 367(5):423--434, 2012.
+
 \bibitem{van2008visualizing}
 L.~Van~der Maaten and G.~Hinton.
 \newblock Visualizing data using t-sne.
 \newblock {\em Journal of Machine Learning Research}, 9(2579-2605):85, 2008.
+
+\bibitem{van2012unraveling}
+A.~Van~der Straten, L.~Van~Damme, J.~E. Haberer, and D.~R. Bangsberg.
+\newblock Unraveling the divergent results of pre-exposure prophylaxis trials
+  for hiv prevention.
+\newblock {\em Aids}, 26(7):F13--F19, 2012.
+
+\bibitem{young2015big}
+S.~D. Young.
+\newblock A “big data” approach to hiv epidemiology and prevention.
+\newblock {\em Preventive medicine}, 70:17--18, 2015.
+
+\bibitem{young2013online}
+S.~D. Young and D.~Jaganath.
+\newblock Online social networking for hiv education and prevention: a mixed
+  methods analysis.
+\newblock {\em Sexually transmitted diseases}, 40(2), 2013.
+
+\bibitem{young2014methods}
+S.~D. Young, C.~Rivers, and B.~Lewis.
+\newblock Methods of using real-time social media technologies for detection
+  and remote monitoring of hiv outcomes.
+\newblock {\em Preventive medicine}, 63:112--115, 2014.
 
 \end{thebibliography}

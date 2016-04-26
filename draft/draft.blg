@@ -2,45 +2,45 @@ This is BibTeX, Version 0.99d (TeX Live 2013/Debian)
 Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
 The top-level auxiliary file: draft.aux
 The style file: abbrv.bst
-Database file #1: sigproc.bib
-You've used 3 entries,
+Database file #1: draft.bib
+You've used 18 entries,
             2118 wiz_defined-function locations,
-            515 strings with 4348 characters,
-and the built_in function-call counts, 931 in all, are:
-= -- 83
-> -- 64
-< -- 0
-+ -- 25
-- -- 22
-* -- 68
-:= -- 179
-add.period$ -- 9
-call.type$ -- 3
-change.case$ -- 19
+            612 strings with 7732 characters,
+and the built_in function-call counts, 7287 in all, are:
+= -- 709
+> -- 438
+< -- 4
++ -- 173
+- -- 154
+* -- 560
+:= -- 1230
+add.period$ -- 57
+call.type$ -- 18
+change.case$ -- 128
 chr.to.int$ -- 0
-cite$ -- 3
-duplicate$ -- 31
-empty$ -- 57
-format.name$ -- 22
-if$ -- 179
+cite$ -- 18
+duplicate$ -- 242
+empty$ -- 483
+format.name$ -- 154
+if$ -- 1490
 int.to.chr$ -- 0
-int.to.str$ -- 3
-missing$ -- 3
-newline$ -- 18
-num.names$ -- 6
-pop$ -- 15
+int.to.str$ -- 18
+missing$ -- 18
+newline$ -- 93
+num.names$ -- 36
+pop$ -- 115
 preamble$ -- 1
-purify$ -- 16
+purify$ -- 110
 quote$ -- 0
-skip$ -- 24
+skip$ -- 185
 stack$ -- 0
-substring$ -- 21
-swap$ -- 3
-text.length$ -- 0
+substring$ -- 433
+swap$ -- 61
+text.length$ -- 4
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 12
+type$ -- 72
 warning$ -- 0
-while$ -- 7
-width$ -- 4
-write$ -- 34
+while$ -- 63
+width$ -- 20
+write$ -- 200
