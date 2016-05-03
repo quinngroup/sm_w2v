@@ -3,9 +3,14 @@ Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
 The top-level auxiliary file: draft.aux
 The style file: abbrv.bst
 Database file #1: draft.bib
+I was expecting a `,' or a `}'---line 200 of file draft.bib
+ : author 
+ :        = {Ethan, Guillen},
+I'm skipping whatever remains of this entry
+Warning--I didn't find a database entry for "truvadagenericblog"
 You've used 18 entries,
             2118 wiz_defined-function locations,
-            612 strings with 7732 characters,
+            613 strings with 7750 characters,
 and the built_in function-call counts, 7287 in all, are:
 = -- 709
 > -- 438
@@ -44,3 +49,4 @@ warning$ -- 0
 while$ -- 63
 width$ -- 20
 write$ -- 200
+(There was 1 error message)
