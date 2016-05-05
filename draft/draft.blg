@@ -3,50 +3,44 @@ Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
 The top-level auxiliary file: draft.aux
 The style file: abbrv.bst
 Database file #1: draft.bib
-I was expecting a `,' or a `}'---line 200 of file draft.bib
- : author 
- :        = {Ethan, Guillen},
-I'm skipping whatever remains of this entry
-Warning--I didn't find a database entry for "truvadagenericblog"
-You've used 18 entries,
+You've used 22 entries,
             2118 wiz_defined-function locations,
-            613 strings with 7750 characters,
-and the built_in function-call counts, 7287 in all, are:
-= -- 709
-> -- 438
+            634 strings with 8415 characters,
+and the built_in function-call counts, 8121 in all, are:
+= -- 789
+> -- 466
 < -- 4
-+ -- 173
-- -- 154
-* -- 560
-:= -- 1230
-add.period$ -- 57
-call.type$ -- 18
-change.case$ -- 128
++ -- 186
+- -- 162
+* -- 584
+:= -- 1370
+add.period$ -- 69
+call.type$ -- 22
+change.case$ -- 144
 chr.to.int$ -- 0
-cite$ -- 18
-duplicate$ -- 242
-empty$ -- 483
-format.name$ -- 154
-if$ -- 1490
+cite$ -- 22
+duplicate$ -- 270
+empty$ -- 571
+format.name$ -- 162
+if$ -- 1674
 int.to.chr$ -- 0
-int.to.str$ -- 18
+int.to.str$ -- 22
 missing$ -- 18
-newline$ -- 93
-num.names$ -- 36
-pop$ -- 115
+newline$ -- 113
+num.names$ -- 44
+pop$ -- 147
 preamble$ -- 1
-purify$ -- 110
+purify$ -- 122
 quote$ -- 0
-skip$ -- 185
+skip$ -- 213
 stack$ -- 0
-substring$ -- 433
-swap$ -- 61
+substring$ -- 454
+swap$ -- 65
 text.length$ -- 4
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 72
+type$ -- 88
 warning$ -- 0
-while$ -- 63
-width$ -- 20
-write$ -- 200
-(There was 1 error message)
+while$ -- 71
+width$ -- 24
+write$ -- 240

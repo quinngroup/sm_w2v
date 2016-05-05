@@ -146,7 +146,7 @@ Shannon Quinn\titlenote{Corresponding author.}\\
 \maketitle
 \begin{abstract}
 
-Pre-Exposure Prophylaxis (PrEP) is a recently developed therapy for the prevention of Human Immunodeficiency Virus (HIV) transmission. The treatment is available as a pill named Truvada and is taken once a day by HIV negative individuals for as much as 99\% protection when exposed to HIV. While medically effective, PrEP suffers from high drug costs, HIV-related social stigma, and under-informed health providers and patients. Data mining of social media has proven effective in the monitoring of HIV in the United States, but no study has investigated PrEP using social media. This paper describes a data mining and machine learning strategy using natural language processing (NLP) that monitors Twitter social media data to identify PrEP discussion trends. Our results show that we can identify PrEP and HIV discussion dynamics over time, and PrEP-related tweets with positive and negative sentiment. These results can be used by public health professionals to monitor PrEP discussion trends, and identify strategies to improve HIV prevention.
+Pre-Exposure Prophylaxis (PrEP) is a recently developed therapy for the prevention of Human Immunodeficiency Virus (HIV) transmission. The treatment is available as a pill named Truvada and is taken once a day by HIV negative individuals for as much as 99\% protection when exposed to HIV. While medically effective, PrEP suffers from high drug costs, HIV-related social stigma, and under-informed health providers and patients. Data mining of social media has proven effective in the monitoring of HIV in the United States, but no study has investigated PrEP using social media. This paper describes a data mining and machine learning strategy using natural language processing (NLP), that monitors Twitter social media data to identify PrEP discussion trends. Our results show that we can identify PrEP and HIV discussion dynamics over time, and PrEP-related tweets with positive and negative sentiment. These results can be used by public health professionals to monitor PrEP discussion trends, and identify strategies to improve HIV prevention.
 
 %These methods may also be useful to identify and preempt HIV outbreaks before they reach epidemic levels.
 
@@ -181,15 +181,15 @@ TODO: this section
 \section{Introduction}
 Pre-exposure prophylaxis (PrEP), a treatment for the prevention of Immunodeficiency Virus (HIV), is marketed under the trade name Truvada. Truvada was approved by the Food and Drug Administration (FDA) in 2012 to prevent sexually acquired HIV infection after several positive trials~\cite{grant2010preexposure,thigpen2012antiretroviral} showed that it was safe and effective. Despite minimal side effects, and risk protection of up to 99\%, PrEP suffers from uncertain health insurance compensation, the risk of producing drug resistant strains and uninformed health providers and patients~\cite{liu2014early}. Truvada must be taken once a day for full protection. In some individuals, adherence is difficult to maintain~\cite{van2012unraveling}, leading to loss of Truvada's effectiveness. While public health officials can spread information and monitor the effectiveness of PrEP at the clinic-level, scaled-up data mining on social media data may provide more complete information on PrEP at the national level.
 
-Tweets from twitter consist of short 140 character text messages that may also contain hashtag annotations. Twitter has been used as a source of data for large scale opinion mining in public health monitoring contexts to predict the spread of influenza~\cite{aramaki2011twitter}, predict postpartum depression~\cite{de2013predicting}, and examine tobacco use~\cite{myslin2013using}. Recently it has also been used for the study of HIV~\cite{young2014methods,young2013online}. These studies of HIV have focused on county-level HIV prevalence prediction, and general HIV discussion monitoring, but they have not focused on PrEP related discussion. Furthermore, existing HIV social media analyses have not taken full advantage of natural language processing (NLP) techniques to discover semantic information in unstructured text~\cite{young2015big}.
+Tweets from Twitter consist of short 140 character text messages that may also contain hashtag annotations. Twitter has been used as a source of data for large scale opinion mining in public health monitoring contexts to predict the spread of influenza~\cite{aramaki2011twitter}, predict postpartum depression~\cite{de2013predicting}, and examine tobacco use~\cite{myslin2013using}. Recently it has also been used for the study of HIV~\cite{young2014methods,young2013online}. These studies of HIV have focused on county-level HIV prevalence prediction, and general HIV discussion monitoring, but they have not focused on PrEP related discussion. Furthermore, existing HIV social media analyses have not taken full advantage of natural language processing (NLP) techniques to discover semantic information in unstructured text~\cite{young2015big}.
 
 One recently developed tool for NLP, called Word2Vec, is a connectionist method that embeds words as word-vectors in a semantic space that captures substitution-similarity~\cite{mikolov2013efficient}. There are several forms of Word2Vec, though the most popular version, Skip-gram Negative Sampling (SGNS), has been shown to perform well at producing word-vectors that capture important word relationships. This includes most notably word analogies. 
 
 Word2Vec is also used as a preprocessing step for additional analyses that start from pre-trained word-vectors. Doc2Vec~\cite{le2014distributed} is a method that produces a document-vector for each document, and each document-level identifier. In the case of a tweet-corpus, document identifiers might include for example document ID, hashtags, and the user who created the document. Each of these document-level identifiers is embedded in a similarity space, allowing one to identify similar tweets, hastags and users.
 
-Latent Dirichlet Allocation~\cite{blei2003latent} (LDA) is used to identify a small set of latent topics present in an unstructured corpus. LDA is a graphical model that generates documents from a set of latent topics. A topic is a probability distribution over words that captures a set of related words. LDA models are often inferred in practice using Bayesian inference either via collapsed Gibbs sampling or Variational Bayesian inference. Inspection of the resulting topics allows one to identify relevant terms and the context in which they occur in the corpus. 
+Latent Dirichlet Allocation~\cite{blei2003latent} (LDA) is used to identify a small set of latent topics present in an unstructured corpus. LDA is a graphical model that generates documents from a set of latent topics. A topic is a probability distribution over words that captures a set of related words. LDA models are often inferred in practice using Bayesian inference either via collapsed Gibbs sampling or Variational Bayesian methods. Inspection of the resulting topics allows one to identify relevant terms and the context in which they occur in the corpus. 
 
-Dynamic Topic Modelling~\cite{blei2006dynamic} (DTM) is an extension of LDA that produces a seried of topic models over time. Briefly, the documents in the corpus are divided into several corpuses that are successive in time. LDA is performed on each corpus to extract a topic distribution. The posterior topic distribution from time $t_n$ is used as the prior for time $t_{n+1}$. This lets the DTM model determine a topic model for each time point that is dependent both on the set of tweets from that time point, and on the previous time point's topic distribution.
+Dynamic Topic Modelling~\cite{blei2006dynamic} (DTM) is an extension of LDA that produces a series of topic models over time. Briefly, the documents in the corpus are divided into several corpuses that are successive in time. LDA is performed on each corpus to extract a topic distribution. The posterior topic distribution from time $t_n$ is used as the prior for time $t_{n+1}$. This lets the DTM model determine a topic model for each time point that is dependent both on the set of tweets from that time point, and on the previous time point's topic distribution.
 
 In this paper we respond to the acknowledged need to harness large scale data in the battle against HIV~\cite{young2015big}. We use the above NLP techniques to extract PrEP-related semantic information from a Twitter corpus dataset. We identify critical PrEP related terms, users, hashtags and tweets. We identify PrEP discussion trends over time, and identify other topics that people who tweet about PrEP, also tweet about. Finally we train a sentiment classifier that automatically identifies PrEP-related tweets with positive and negative sentiment. Together these results, and these approaches, can be used by public health officials to identify the national PrEP discussion and respond to issues as they arise.
 
@@ -214,9 +214,9 @@ We trained a Word2Vec model, and queried for the top 10 word-vectors related to 
 % table 1 - w2v PrEP
 \begin{table}
 \centering
-\caption{Cosine Similarity to word-vector PrEP}
+\caption{Cosine similarity to word-vector "PrEP"}
 \begin{tabular}{|l|c|} \hline
-Related Word & Cosine Similarity to PrEP\\ \hline
+Related word & cosine similarity to PrEP\\ \hline
 truvada & 0.796666\\ \hline
 DoingIt & 0.738141\\ \hline
 WorldAIDSDay & 0.720910\\ \hline
@@ -234,16 +234,16 @@ Doc2Vec allows us to identify the top users, tweets, and hashtags associated wit
 
 Interestingly, we also found 3 tweets and 1 user in the top 10 doc2vec results for \#prep. Tweet 702179860983189504 has content spreading HIV prevention awareness: "\#StoneColdVideoTODAY if You see this 13 symptoms. Do HIV Test Immediately. Must Read". Conversely tweet 708519265540907010 has content that calls into doubt the usefulness of PrEP: "Checkout why PrEP is hurting the cause \& \#JoinTheConversation \#LGBTQIA".
 
-TODO: investigate those tweets, especially "Checkout why PrEP is hurting the cause"
+We investigated the blog article linked to tweet 708519265540907010\cite{prephurtingcause}. The article, authored by Steven Banning, an HIV positive individual, expresses concerns about how new HIV treatments, like PrEP are being adopted by the HIV community. Steven notes that treatments for HIV positive individuals, and treatments to prevent HIV such as PrEP have made HIV a much more treatable disease than it was in the 1980's. These medical advances may have led in part to some unintended medical and social consequences. Steven notes that the rise of drug-resistant HIV strains has increased, in part due to HIV patients not adhering to to consistent treatment plans. He also points out the recent social trend of "bug chasers" individuals who are actively seeking to acquire and spread HIV strains. Perhaps the widespread availability of effective HIV medications have desensitized people to a healthy fear of the disease.
 
-User 711275699529764864 appears to be a twitter spam bot with no obvious connection to PrEP. Thus while we observe some noise, our results demonstrate a way to quickly identify and monitor the most viral tweets related to PrEP. As the discussion changes, public health professionals can use this information to quickly identify the most relevant viral sentiment in the online PrEP conversation.
+User 711275699529764864 appears to be a Twitter spam bot with no obvious connection to PrEP. Unfortunately, bots are commonly used on Twitter for advertising and marketing purposes, and sometimes hinder pertinent information retrieval. Thus while we observe some noise, our results demonstrate a way to quickly identify and monitor the most viral tweets related to PrEP. As the discussion changes, public health professionals can use this information to quickly identify the most relevant viral sentiment in the online PrEP conversation.
 
 % table 2 - d2v PrEP
 \begin{table}
 \centering
-\caption{Cosine Similarity to doc-vector \#PrEP}
+\caption{Cosine similarity to document-vector "\#PrEP"}
 \begin{tabular}{|l|c|} \hline
-Related hashtag/Tweet & Cosine Similarity to \#PrEP\\ \hline
+Related hashtag/tweet & cosine similarity to \#PrEP\\ \hline
 \#lgbtmedia16 & 0.739128\\ \hline
 \#hiv & 	0.727602 \\ \hline
 \#whereisprep & 0.707165 \\ \hline
@@ -323,7 +323,7 @@ We chose to use a relatively simple classifier model (logistic regression) and s
 % table 3
 \begin{table*}
 \centering
-\caption{Positive Sentiment Tweets.}
+\caption{Positive sentiment tweets.}
 \begin{tabular}{|p{2.5cm}|p{12cm}|} \hline
 Category & Text\\ \hline
 General & "RT TOPublicHealth The Works provides testing for HIV anonymous \& rapid test available . Call 416-392-0520 for more info"\\ \hline
@@ -345,11 +345,11 @@ Truvada specific & "RT EvanJPeterson For \#worldAIDSday my early \#PrEP arcticle
 % table 4
 \begin{table*}
 \centering
-\caption{Negative Sentiment Tweets.}
+\caption{Negative sentiment tweets.}
 \begin{tabular}{|p{2.5cm}|p{12cm}|} \hline
 Category & Text\\ \hline
-General & "Also, how fucking vile of Hillary to say. Reagan did fucking NOTHING during the AIDS epidemic until it was too late. What a stupid old hag."\\ \hline
-General & "I wonder why he beat her ass when she was tryna leave like she wasn't gone be running back when she found out she had HIV \& nobody want her"\\ \hline
+General & "Also, how f***ing vile of Hillary to say. Reagan did f***ing NOTHING during the AIDS epidemic until it was too late. What a stupid old hag."\\ \hline
+General & "I wonder why he beat her a** when she was tryna leave like she wasn't gone be running back when she found out she had HIV \& nobody want her"\\ \hline
 General & "Aaannd. Hillary Clinton breathes a sigh of relief that Twitter has left its outrage of her AIDS comments behind to tend to Drumpf debacle."\\ \hline
 
 PrEP specific & "RT gaston\_croupier \#Truvada patent's not expired yet but it is sold online as a generic drug? There's something rotten in internet \#PrEP h"\\ \hline
@@ -367,19 +367,19 @@ While the sentiment classification doesn't have perfect sentiment accuracy, we c
 
 The negative tweets may be more important than the positive tweets to guide future public health policy corrections. The negative tweets contain concerns that Truvada may not block HIV transmission in all cases (Table 4). There also seems to be concern that use of Truvada may increase the transmission of non-HIV STDs such as Hepatitis C because some PrEP users stop using condoms. This may indicate that public health professionals need to stress that PrEP users continue to wear condoms for full protection against other diseases in PrEP-related health information.
 
-Another negative tweet questions whether Truvada is available as a generic drug. PrEP is currently only available through Gilead's Truvada, though a generic may be available as soon as 2017~\cite{truvadagenericblog}. Current patients must deal with uncertain drug prices, which vary from \$14,000 to \$70~\cite{truvadagenericblog}, and have in some cases, uncertain medical insurance reimbursement status. This tweet highlights both the difficulty of aquiring affordable PrEP medication, and also a level of conflicting information circulating on social media.
+Another negative tweet questions whether Truvada is available as a generic drug. PrEP is currently only available through Gilead's Truvada, though a generic may be available as soon as 2017~\cite{truvadagenericblog}. Current patients must deal with uncertain drug prices, which vary from \$14,000 to \$70~\cite{truvadagenericblog}, and have in some cases, uncertain medical insurance reimbursement status. This tweet highlights both the difficulty of acquiring affordable PrEP medication, and also a level of conflicting information circulating on social media.
 
 Finally we see some contention over national political leadership in the effort to prevent HIV. While political discussions can often get heated, especially on Twitter, the contention can harm concerted efforts to provide consent governmental leadership in HIV prevention. Public health officials may consider stressing that unity in health policy at the federal level is important to protect the population from the spread of HIV.
 
-TODO: investigate the reference to  \#truvadawhore which came up in the sentiment tweets above.
+The last tweet in the positive tweets table (Table 3), referencing the hashtag "\#truvadawhore", links to a blog article written by Evan Peterson titled "The Case for PrEP, or How I Learned to Stop Worrying and Love HIV-Positive Guys"~\cite{caseforprep}. Evan is an HIV-negative individual who adheres to a daily PrEP regimen to protect himself from HIV. Even finds that for him the side effects and inconveniences associated with taking daily Truvada are worth the protection, noting that he also practices safe sex, and gets tested regularly. Evan addresses the hashtag \#truvadawhore, which originated with a Huffington Post article titled "Truvada Whores?"~\cite{truvadawhore} which expressed concern toward the increased sexual risk taking of some Truvada patients. Even notes that for HIV-negative Truvada patients like him, who are careful about the risks they are taking, taking Truvada may actually provide more than just a medical protection. Truvada users may also be more informed than at risk people who do not use Truvada, because they are more educated and responsible with respect to their sexual health.
 
 \section{Conclusions}
 
-- Moving towards HIV outbreak prediction. 
+In this article we describe a variety of NLP techniques that were used to analyse a tweet corpus to monitor the social media discussion for HIV prevention. We identified several notable trends. Firstly, we found that PrEP discussion is increasing on social media, Secondly we found that people who mention PrEP also talk about general health, STDs, stigma, and politics.
 
-- Automatically identifying PrEP adoption/adherence sentiment in US population.
+Our sentiment analysis identified both positive and negative PrEP and HIV related tweets. We identified two important arguments for an against PrEP. One as demonstrated by blog author Steven Banning hypothesises that PrEP overall could lead to unintended, and unhealthy risk seeking recklessness. The contrary hypothesis, described by blog author Even Peterson, suggests that PrEP adoption is a product of healthy, responsible at-risk individuals who are gaining HIV protection in an effective form. These opposing arguments were identified automatically using large scale social media data. Further investigation and data analysis, of social media data, or other health data may be able to quantify PrEP and Truvada's effectiveness in the ongoing effort to prevent HIV infection.
 
-- A lot of information on twitter is from bots, they only cost \$ per bot. This along with the character limit and slang makes twitter hard to use, but we've shown that it can be used. In fact twitter bots are slowly making twitter unusable because free advertising and marketing. Maybe in a future project we make twitter bots to spread information about PrEP.
+Future analyses may also take advantage of the rich Twitter API. An additional refinement of the analyses presented here may take a more active approach. Rather than simple passive data collection, we may build a twitter bot to interact with HIV and PrEP-tweeters, or conduct a distributed health survey. Finally, future HIV and PrEP research may benefit from the incorporation of multiple data sources, either social media sources, health information sources, or both.
 
 %\end{document}  % This is where a 'short' article might terminate
 
