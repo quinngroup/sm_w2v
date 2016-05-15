@@ -1,5 +1,10 @@
 \begin{thebibliography}{10}
 
+\bibitem{sentimentdata}
+Twitter sentiment corpus.
+\newblock \url{http://www.sananalytics.com/lab/twitter-sentiment/}.
+\newblock Accessed: 2016-03-14.
+
 \bibitem{aramaki2011twitter}
 E.~Aramaki, S.~Maskawa, and M.~Morita.
 \newblock Twitter catches the flu: detecting influenza epidemics using twitter.

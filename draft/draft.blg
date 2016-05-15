@@ -3,44 +3,46 @@ Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
 The top-level auxiliary file: draft.aux
 The style file: abbrv.bst
 Database file #1: draft.bib
-You've used 22 entries,
+Warning--to sort, need author or key in sentimentdata
+You've used 23 entries,
             2118 wiz_defined-function locations,
-            634 strings with 8415 characters,
-and the built_in function-call counts, 8121 in all, are:
-= -- 789
-> -- 466
+            638 strings with 8528 characters,
+and the built_in function-call counts, 8289 in all, are:
+= -- 806
+> -- 467
 < -- 4
-+ -- 186
++ -- 187
 - -- 162
-* -- 584
-:= -- 1370
-add.period$ -- 69
-call.type$ -- 22
-change.case$ -- 144
+* -- 589
+:= -- 1389
+add.period$ -- 72
+call.type$ -- 23
+change.case$ -- 147
 chr.to.int$ -- 0
-cite$ -- 22
-duplicate$ -- 270
-empty$ -- 571
+cite$ -- 24
+duplicate$ -- 277
+empty$ -- 594
 format.name$ -- 162
-if$ -- 1674
+if$ -- 1716
 int.to.chr$ -- 0
-int.to.str$ -- 22
+int.to.str$ -- 23
 missing$ -- 18
-newline$ -- 113
+newline$ -- 118
 num.names$ -- 44
-pop$ -- 147
+pop$ -- 157
 preamble$ -- 1
-purify$ -- 122
+purify$ -- 124
 quote$ -- 0
-skip$ -- 213
+skip$ -- 218
 stack$ -- 0
-substring$ -- 454
-swap$ -- 65
+substring$ -- 459
+swap$ -- 66
 text.length$ -- 4
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 88
-warning$ -- 0
+type$ -- 92
+warning$ -- 1
 while$ -- 71
-width$ -- 24
-write$ -- 240
+width$ -- 25
+write$ -- 249
+(There was 1 warning)
