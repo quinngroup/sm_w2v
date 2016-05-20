@@ -17,7 +17,6 @@ doc/*
 models/*
 *glds00g.asc
 notebooks/*.pdf
-*.eps
 *.ps
 *.gz
 *.log
