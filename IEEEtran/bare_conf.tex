@@ -333,12 +333,29 @@
 % author names and affiliations
 % use a multiple column layout for up to three different
 % affiliations
-%\author{\IEEEauthorblockN{Michael Shell}
-%\IEEEauthorblockA{School of Electrical and\\Computer Engineering\\
-%Georgia Institute of Technology\\
-%Atlanta, Georgia 30332--0250\\
-%Email: http://www.michaelshell.org/contact.html}
-%\and
+\author{\IEEEauthorblockN{Patrick Breen}
+\IEEEauthorblockA{Institute of Bioinformatics\\
+University of Georgia\\
+Athens, Georgia\\
+Email: pbreen@uga.edu}
+\and
+\IEEEauthorblockN{Jane Kelly}
+\IEEEauthorblockA{ Georgia Department of \\Public Health\\
+Atlanta, Georgia\\
+Email: Jane.Kelly@dph.ga.gov}
+\and
+\IEEEauthorblockN{Timothy Heckman}
+\IEEEauthorblockA{College of Public Health\\
+University of Georgia\\
+Athens, Georgia\\
+Email: heckman@uga.edu}
+\and
+\IEEEauthorblockN{Shannon Quinn}
+\IEEEauthorblockA{Department of \\Computer Science\\
+University of Georgia\\
+Athens, Georgia\\
+Email: squinn@cs.uga.edu}
+}
 %\IEEEauthorblockN{Homer Simpson}
 %\IEEEauthorblockA{Twentieth Century Fox\\
 %Springfield, USA\\
@@ -447,7 +464,7 @@ We sought to determine trends in HIV and PrEP discourse on Twitter to inform and
 
 The first analysis that we performed sought to identify certain keywords, hashtags, tweets and users, that were discussed in HIV and PrEP related contexts. Word2vec and the related method, doc2vec, are unsupervised machine learning methods that have performed well at embedding natural language in a semantic vector space. In our analysis, word2vec allows us to determine semantically similar words to a query word, while doc2vec allows us to determine similar tweets, users and hashtags to a query hashtag.
 
-We trained a word2vec model, and queried for the top 10 word-vectors related to the term PrEP (Table~\ref{tbl:w2v}). We found several HIV/AIDS related events, WorldAIDSDay, HLM2016AIDS, ICASA2015, as well as the PrEP drug Truvada, and the term HIV. In addition, we found the acronym ART which refers to Anti-Retroviral Therapy. DoingIt, and OneConversation, are ongoing efforts led by the Center for Disease Control (CDC) to spread awareness and reduce the spread of HIV. NBHAAD is an organization that is committed to increasing awareness for HIV within the Black community. Nancy Reagan, who died in early 2016, was mentioned in conjunction with her efforts to combat HIV in the 1980's. Together these results show us a high-level view of the important components of the national PrEP conversation on Twitter over the collection period.
+We trained a word2vec model on the filtered dataset of 624,569 tweets, and queried for the top 10 word-vectors related to the term PrEP (Table~\ref{tbl:w2v}). We found several HIV/AIDS related events, WorldAIDSDay, HLM2016AIDS, ICASA2015, as well as the PrEP drug Truvada, and the term HIV. In addition, we found the acronym ART which refers to Anti-Retroviral Therapy. DoingIt, and OneConversation, are ongoing efforts led by the Center for Disease Control (CDC) to spread awareness and reduce the spread of HIV. NBHAAD is an organization that is committed to increasing awareness for HIV within the Black community. Nancy Reagan, who died in early 2016, was mentioned in conjunction with her efforts to combat HIV in the 1980's. Together these results show us a high-level view of the important components of the national PrEP conversation on Twitter over the collection period.
 
 % table 1 - w2v PrEP
 \begin{table}
@@ -511,7 +528,7 @@ We identified several trends. Notably the pharmaceutical based HIV therapies all
 
 \subsection{Time Domain}
 
-Next we sought to identify some temporal trends in PrEP related trends. We used Dynamic Topic Modeling (DTM) to identify how certain topics change over time. We specified 10 topics and used each week's worth of tweets, over a 30 week period from the 47th week of 2015 to the 14th week of 2016, as our time points.
+Next we sought to identify some temporal trends in PrEP related trends. We used Dynamic Topic Modeling (DTM) on our tweet corpus to identify how certain topics change over time. We specified 10 topics and used each week's worth of tweets, over a 30 week period from the 47th week of 2015 to the 14th week of 2016, as our time points.
 
 We identified two topics that showed relevant trends. In topic 5 we see that the keyword `PrEP' increases over time, while `prevention', `drug' and `risk' remain constant (Fig.~\ref{fig:prep}). The term `pill', also from topic 5, declines overtime. These dynamics may indicate that PrEP discussion is becoming more prevalent. This growing trend would be consistent with the fact that while PrEP is still not widely known about among patients and healthcare providers, information about PrEP is slowly entering into national awareness. A study in New York City in 2011 indicated that only 36\% of high risk individuals were aware of PrEP~\cite{mehta2011awareness}.
 
